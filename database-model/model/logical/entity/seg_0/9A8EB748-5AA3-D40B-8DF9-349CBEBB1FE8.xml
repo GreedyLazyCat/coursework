@@ -1,0 +1,54 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="9A8EB748-5AA3-D40B-8DF9-349CBEBB1FE8" name="Permission">
+<createdBy>htmlw</createdBy>
+<createdTime>2025-04-26 15:46:49 UTC</createdTime>
+<ownerDesignName>model</ownerDesignName>
+<engineerTo>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="2E8190B3-93F5-1961-2DD0-9D65CCD1DB65">
+<createdBy>htmlw</createdBy>
+<createdTime>2025-04-26 15:47:45 UTC</createdTime>
+<ownerDesignName>model</ownerDesignName>
+<engineerTo>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="name" id="B60428FE-E8CA-3F4B-0A47-71FB1671863B">
+<createdBy>htmlw</createdBy>
+<createdTime>2025-04-26 15:47:49 UTC</createdTime>
+<ownerDesignName>model</ownerDesignName>
+<engineerTo>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="06E1AB7C-4457-E637-DA4A-2056B76B94C5" name="Permission PK">
+<createdBy>htmlw</createdBy>
+<createdTime>2025-04-26 15:47:48 UTC</createdTime>
+<ownerDesignName>model</ownerDesignName>
+<engineerTo>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>2E8190B3-93F5-1961-2DD0-9D65CCD1DB65</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

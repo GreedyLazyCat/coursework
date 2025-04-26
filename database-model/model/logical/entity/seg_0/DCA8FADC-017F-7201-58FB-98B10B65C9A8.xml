@@ -4,7 +4,7 @@
 <createdTime>2025-04-26 14:06:46 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
-<item key="6CD23A89-0FF3-1B16-00B8-D732EEF0F12D" value="true"/>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <adequatelyNormalized>NO</adequatelyNormalized>
 <expectedVolumes>0</expectedVolumes>
@@ -20,7 +20,7 @@
 <createdTime>2025-04-26 14:12:16 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
-<item key="6CD23A89-0FF3-1B16-00B8-D732EEF0F12D" value="true"/>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
@@ -31,7 +31,7 @@
 <generatorID>1D95062B-67CE-C7F9-623A-8094D3523145</generatorID>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
-<item key="6CD23A89-0FF3-1B16-00B8-D732EEF0F12D" value="true"/>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <referedAttribute>D681BD5B-74EA-D266-B01C-62260B880A89</referedAttribute>
 <use>0</use>
@@ -43,7 +43,7 @@
 <generatorID>3ACD47F6-DD41-9DAE-B2DE-BF432810FB11</generatorID>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
-<item key="6CD23A89-0FF3-1B16-00B8-D732EEF0F12D" value="true"/>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <referedAttribute>7B9409E6-9A79-0A8B-637D-69C8CD5FCD55</referedAttribute>
@@ -55,7 +55,7 @@
 <createdTime>2025-04-26 14:14:47 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
-<item key="6CD23A89-0FF3-1B16-00B8-D732EEF0F12D" value="true"/>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <use>0</use>
@@ -66,7 +66,7 @@
 <createdTime>2025-04-26 14:15:00 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
-<item key="6CD23A89-0FF3-1B16-00B8-D732EEF0F12D" value="true"/>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <use>0</use>
@@ -77,7 +77,7 @@
 <createdTime>2025-04-26 14:21:10 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
-<item key="6CD23A89-0FF3-1B16-00B8-D732EEF0F12D" value="true"/>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
@@ -87,7 +87,7 @@
 <createdTime>2025-04-26 14:21:18 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
-<item key="6CD23A89-0FF3-1B16-00B8-D732EEF0F12D" value="true"/>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <use>0</use>
@@ -98,12 +98,12 @@
 <createdTime>2025-04-26 14:23:04 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
-<item key="6CD23A89-0FF3-1B16-00B8-D732EEF0F12D" value="true"/>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
-<use>0</use>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
 <logicalDatatype>LOGDT040</logicalDatatype>
-<domain>FDABA626-EBE1-09F3-9A29-93DA2B473EEF</domain>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="storagePath" id="A9370643-5C04-C9B4-6586-E225A97F83B0">
@@ -111,7 +111,7 @@
 <createdTime>2025-04-26 14:29:54 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
-<item key="6CD23A89-0FF3-1B16-00B8-D732EEF0F12D" value="true"/>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <use>0</use>
@@ -124,7 +124,7 @@
 <createdTime>2025-04-26 14:12:18 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
-<item key="6CD23A89-0FF3-1B16-00B8-D732EEF0F12D" value="true"/>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

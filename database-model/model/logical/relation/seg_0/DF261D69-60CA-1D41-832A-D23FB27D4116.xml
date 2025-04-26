@@ -1,0 +1,18 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="StorageItemRolePermissions" directorySegmentName="seg_0" id="DF261D69-60CA-1D41-832A-D23FB27D4116">
+<createdBy>htmlw</createdBy>
+<createdTime>2025-04-26 15:56:54 UTC</createdTime>
+<ownerDesignName>model</ownerDesignName>
+<engineerTo>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
+</engineerTo>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>*</sourceCardinality>
+<sourceEntity>8E1A1E47-1FFF-F3FA-B140-D0DF75DE42CE</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>9A8EB748-5AA3-D40B-8DF9-349CBEBB1FE8</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>
