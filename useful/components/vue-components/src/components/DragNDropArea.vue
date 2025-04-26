@@ -1,10 +1,19 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 
+const showCover = ref(false)
+const emit = defineEmits<{(e: 'filesDropped', files: FileList): void}>()
+
+function drop(e: DragEvent) {
+    showCover.value = false
+    if(e.dataTransfer && e.dataTransfer.files){
+        emit('filesDropped', e.dataTransfer.files)
+    }
+}
 </script>
-
 <template>
-    <div class="DragNDropArea">
-        <div class="DragNDropAreaCover">
+    <div class="DragNDropArea" @drop.prevent="drop" @dragover.prevent="" @dragenter.prevent="showCover = true">
+        <div class="DragNDropAreaCover" v-if="showCover" @dragleave="showCover = false">
             <div class="DragNDropAreaContent">
                 <span>Перетащи файлы сюда, чтобы загрузить.</span> 
             </div>

@@ -1,11 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import DragNDropArea from './components/DragNDropArea.vue';
+
+function filesDropped(files: FileList){
+  console.log(files)
+}
 
 </script>
 <template>
   <div class="main">
     asdjlsdljasldjalsdjlj
-    <DragNDropArea></DragNDropArea>
+    <DragNDropArea @files-dropped="filesDropped"></DragNDropArea>
   </div>
 </template>
 
@@ -15,8 +19,8 @@ import DragNDropArea from './components/DragNDropArea.vue';
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 500px;
-  height: 500px;
+  width: 100%;
+  height: 100%;
   outline: 1px solid red;
   background-color: var(--md-sys-color-surface);
 }
