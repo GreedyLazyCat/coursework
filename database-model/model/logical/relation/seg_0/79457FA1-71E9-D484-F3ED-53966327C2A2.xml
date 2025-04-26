@@ -1,18 +1,18 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="StorageItemRolePermissions" directorySegmentName="seg_0" id="DF261D69-60CA-1D41-832A-D23FB27D4116">
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="RolePermissions" directorySegmentName="seg_0" id="79457FA1-71E9-D484-F3ED-53966327C2A2">
 <createdBy>htmlw</createdBy>
-<createdTime>2025-04-26 15:56:54 UTC</createdTime>
+<createdTime>2025-04-26 16:15:00 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
 <item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <identifying>false</identifying>
-<optionalSource>true</optionalSource>
+<optionalSource>false</optionalSource>
 <optionalTarget>false</optionalTarget>
 <sourceCardinality>*</sourceCardinality>
-<sourceEntity>8E1A1E47-1FFF-F3FA-B140-D0DF75DE42CE</sourceEntity>
+<sourceEntity>900AA9F0-C8E3-56E1-E66A-95678A7D1A59</sourceEntity>
 <targetCardinalityString>*</targetCardinalityString>
-<targetEntity>9A8EB748-5AA3-D40B-8DF9-349CBEBB1FE8</targetEntity>
+<targetEntity>263E6A19-303C-4B6A-9105-296AEFC06364</targetEntity>
 <transferable>true</transferable>
 <deleteRule>NO ACTION</deleteRule>
 </Relation>

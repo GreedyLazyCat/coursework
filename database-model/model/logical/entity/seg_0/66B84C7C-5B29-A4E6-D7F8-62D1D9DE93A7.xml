@@ -1,7 +1,7 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="36FB4F5B-12ED-40C6-4AAD-B643BE6544D3" name="StorageItemRoles">
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="66B84C7C-5B29-A4E6-D7F8-62D1D9DE93A7" name="StorageItemUserRole">
 <createdBy>htmlw</createdBy>
-<createdTime>2025-04-26 15:38:41 UTC</createdTime>
+<createdTime>2025-04-26 16:17:26 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
 <item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
@@ -15,9 +15,9 @@
 <minVolumes>0</minVolumes>
 <normalForm>Third</normalForm>
 <attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
-<Attribute name="id" id="4CB5F77F-1B78-E730-63C0-ED3AC0A5662D">
+<Attribute name="id" id="516B0971-0CDF-462B-4407-37EB383BA568">
 <createdBy>htmlw</createdBy>
-<createdTime>2025-04-26 15:42:40 UTC</createdTime>
+<createdTime>2025-04-26 16:20:22 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
 <item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
@@ -25,10 +25,22 @@
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="userId" id="20CB8AB8-AFFA-971E-6649-735AD23FC56A">
+<Attribute name="roleId" id="9939CC1D-F6B4-2B93-AFA6-18A9880D3DEF">
 <createdBy>htmlw</createdBy>
-<createdTime>2025-04-26 15:40:38 UTC</createdTime>
-<generatorID>725A8637-2987-CE6B-58EA-7C9D860B1F11</generatorID>
+<createdTime>2025-04-26 16:23:38 UTC</createdTime>
+<generatorID>8D3D2693-B31D-6C1F-16C7-D3E6617E14C2</generatorID>
+<ownerDesignName>model</ownerDesignName>
+<engineerTo>
+<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
+</engineerTo>
+<referedAttribute>A1EF619A-AA36-93BF-F1D3-D31C257FFB55</referedAttribute>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="userId" id="A5D596A7-6267-3A18-49AC-21F8AB44C40D">
+<createdBy>htmlw</createdBy>
+<createdTime>2025-04-26 16:24:19 UTC</createdTime>
+<generatorID>EDAE4391-0708-BA71-66F7-8160607FD1DE</generatorID>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
 <item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
@@ -38,10 +50,10 @@
 <use>1</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="sotrageItemId" id="0A4BDB8F-47EC-67B6-4BE8-F257DB99E160">
+<Attribute name="storageItemId" id="26FEF8B2-3CA6-D275-B985-A248CC4D7410">
 <createdBy>htmlw</createdBy>
-<createdTime>2025-04-26 15:41:53 UTC</createdTime>
-<generatorID>65999C38-E7E8-7073-E83E-DE8131BF26AD</generatorID>
+<createdTime>2025-04-26 16:24:47 UTC</createdTime>
+<generatorID>6D42DCF0-D44F-4BF0-E37E-6581F595F6D4</generatorID>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
 <item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
@@ -50,30 +62,18 @@
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="roleId" id="EEF265C9-6A4E-E4F6-2D60-D5F69B2FF09D">
-<createdBy>htmlw</createdBy>
-<createdTime>2025-04-26 15:48:20 UTC</createdTime>
-<generatorID>A6395B8B-D9CA-77C1-EE69-7A95A9E63271</generatorID>
-<ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
-<referedAttribute>60FF0700-C05C-5B0D-36C4-13A072592F9D</referedAttribute>
-<use>0</use>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-</Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
-<identifier id="34514795-1D4C-62AC-0603-3B208F575F1C" name="StorageItemRoles PK">
+<identifier id="4C8E5907-9BF2-7377-A52B-6530C69BC6F5" name="StorageItemUserRole PK">
 <createdBy>htmlw</createdBy>
-<createdTime>2025-04-26 15:42:44 UTC</createdTime>
+<createdTime>2025-04-26 16:20:25 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <engineerTo>
 <item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>
-<attributeRef>4CB5F77F-1B78-E730-63C0-ED3AC0A5662D</attributeRef>
+<attributeRef>516B0971-0CDF-462B-4407-37EB383BA568</attributeRef>
 </usedAttributes>
 </identifier>
 </identifiers>
