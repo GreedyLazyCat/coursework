@@ -1,10 +1,16 @@
-html, body{
+:root {
+    --input-font-size: 14px;
+    --input-border-radius: 8px;
+}
+
+html,
+body {
     padding: 0;
     margin: 0;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
-.main-container{
+.main-container {
     background-color: var(--md-sys-color-surface);
     position: absolute;
     height: 100%;
@@ -13,3 +19,32 @@ html, body{
     z-index: -1;
 }
 
+.cura-input {
+    border: 1px solid var(--md-sys-color-outline);
+    padding: 8px 12px;
+    border-radius: var(--input-border-radius);
+    background-color: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+}
+
+.cura-input:hover {
+    cursor: text;
+}
+
+.cura-input input {
+    border: none;
+    padding: 0;
+    background-color: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+    width: 100%;
+    font-size: var(--input-font-size);
+    margin: 0 8px;
+}
+
+.cura-input input:focus {
+    outline: none;
+}
