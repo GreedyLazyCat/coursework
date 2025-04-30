@@ -1,0 +1,88 @@
+.storage-main-container {
+    display: flex;
+    /* flex-wrap: wrap; */
+    gap: var(--s1);
+    height: 100%;
+    width: 100%;
+}
+
+.storage-main-container> :first-child {
+    flex-grow: 1;
+    flex-basis: 250px;
+    border-right: 1px solid var(--md-sys-color-outline-variant);
+    padding: 8px;
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.storage-main-container> :last-child {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: 50%;
+}
+
+.storage-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 16px;
+}
+
+.storage-nav ul li {
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    color: var(--md-sys-color-on-surface);
+}
+
+.storage-nav ul li.active {
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+.storage-nav ul li:hover {
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    cursor: pointer;
+}
+
+.storage-main-container hr{
+    margin: 0;
+    border: none;
+    border-top: 1px double var(--md-sys-color-outline-variant);
+}
+
+.storage-cura-logo{
+    display: flex;
+    align-items: center;
+    color: var(--md-sys-color-primary);
+    gap: 8px;
+    font-size: 32px;
+}
+
+.avatar{
+    height: 32px;
+    width: 32px;
+    background-color: var(--md-sys-color-on-surface);
+    border-radius: 50%;
+}
+
+.storage-user-sidebar{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.storage-user-info> :first-child{
+    color: var(--md-sys-color-on-surface);
+    font-size: 16px;
+}
+.storage-user-info> :last-child{
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 12px;
+}

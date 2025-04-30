@@ -1,27 +1,20 @@
-:root {
-    --input-font-size: 14px;
-    --input-border-radius: 8px;
-}
 
-* {
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
-}
-
-html,
-body {
-    padding: 0;
-    margin: 0;
-}
-
-.main-container {
-    background-color: var(--md-sys-color-surface);
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    overflow: scroll;
-    z-index: -1;
-}
-
+<script setup lang="ts">
+const {name = '', placeholder = '', type='text'} = defineProps<{
+    name?: string,
+    placeholder?: string,
+    type?: string,
+}>()
+</script>
+<template>
+    <div class="cura-input">
+        
+        <slot name="leading"></slot>
+        <input :type="type" :name="name" id="" :placeholder="placeholder">
+        <slot name="trailing"></slot>
+    </div>
+</template>
+<style>
 .cura-input {
     border: 1px solid var(--md-sys-color-outline);
     padding: 8px 12px;
@@ -33,6 +26,7 @@ body {
     align-items: center;
     height: 32px;
 }
+
 
 .cura-input:hover {
     cursor: text;
@@ -51,3 +45,4 @@ body {
 .cura-input input:focus {
     outline: none;
 }
+</style>
