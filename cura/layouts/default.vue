@@ -2,7 +2,6 @@
 import '~/assets/css/main.css'
 import '~/assets/css/dark.css'
 import '~/assets/css/light.css'
-import '~/assets/css/storage.css'
 
 const prefersDark = ref(false)
 
@@ -45,3 +44,72 @@ const theme = computed(() => prefersDark.value ? "dark" : "light")
         </div>
     </div>
 </template>
+
+<style>
+.storage-main-container {
+    display: flex;
+    /* flex-wrap: wrap; */
+    gap: var(--s1);
+    height: 100%;
+    width: 100%;
+}
+
+.storage-main-container> :first-child {
+    flex-grow: 1;
+    flex-basis: 250px;
+    border-right: 1px solid var(--md-sys-color-outline-variant);
+    padding: 8px;
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.storage-main-container> :last-child {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: 50%;
+    position: relative;
+}
+
+
+
+.storage-main-container hr{
+    margin: 0;
+    border: none;
+    border-top: 1px double var(--md-sys-color-outline-variant);
+}
+
+.storage-cura-logo{
+    display: flex;
+    align-items: center;
+    color: var(--md-sys-color-primary);
+    gap: 8px;
+    font-size: 32px;
+}
+
+.avatar{
+    height: 32px;
+    width: 32px;
+    background-color: var(--md-sys-color-on-surface);
+    border-radius: 50%;
+}
+
+.storage-user-sidebar{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.storage-user-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.storage-user-info> :first-child{
+    color: var(--md-sys-color-on-surface);
+    font-size: 16px;
+}
+.storage-user-info> :last-child{
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 12px;
+}
+</style>
