@@ -104,6 +104,14 @@
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
+<Attribute name="uploadStatus" id="F0679352-0183-BA04-47C6-BFA60227BDF7">
+<createdBy>htmlw</createdBy>
+<createdTime>2025-04-30 08:15:17 UTC</createdTime>
+<ownerDesignName>model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
 <identifier id="298932CB-02CD-99CE-837B-36A2E6146CA9" name="StorageItem PK">
