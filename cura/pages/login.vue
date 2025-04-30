@@ -3,7 +3,17 @@ definePageMeta(
     {
         layout: 'login-layout'
     }
-) 
+)
+
+const showPassword = ref(false)
+
+const icon = computed(() => showPassword.value ? "material-symbols:visibility-off-outline" : "material-symbols:visibility-outline")
+const inputType = computed(() => showPassword.value ? "text" : "password")
+
+function changeVisibility() {
+    showPassword.value = !showPassword.value;
+}
+
 </script>
 <template>
     <div class="login-main-container">
@@ -17,22 +27,31 @@ definePageMeta(
                             fill="currentColor" />
                     </svg>
                 </div>
-                <form action="">
+                <form action="" @submit.prevent>
                     <CuraInput placeholder="Имя пользователя" name="password" type="text">
                         <template #leading>
                             <Icon name="material-symbols:account-circle-outline" style="font-size: 20px;"></Icon>
                         </template>
                     </CuraInput>
                     <div class="login-form-item__feedback"></div>
-                    <CuraInput placeholder="Пароль" name="password" type="password">
+                    <CuraInput placeholder="Пароль" name="password" :type="inputType">
                         <template #leading>
                             <Icon name="material-symbols:lock" style="font-size: 20px;"></Icon>
                         </template>
+                        <template #trailing>
+                            <Icon :name="icon" @mouseup="changeVisibility" style="font-size: 20px;"
+                                class="cura-input-show-password"></Icon>
+                        </template>
                     </CuraInput>
                     <div class="login-form-item__feedback"></div>
-                    <button class="login-btn">Войти</button>
+                    <button class="login-btn" @mouseup="navigateTo({ path: '/home' })">Войти</button>
                 </form>
             </div>
         </div>
     </div>
 </template>
+<style>
+.cura-input-show-password:hover {
+    cursor: pointer;
+}
+</style>
