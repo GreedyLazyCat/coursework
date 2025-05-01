@@ -5,6 +5,8 @@ const { class: className } = defineProps<{
 const search = ref('')
 const showResults = ref(false)
 
+const emit = defineEmits<{ (e: 'searchItemClicked', item: string): void }>()
+
 watchEffect(() => {
     if (search.value !== '') {
         showResults.value = true
@@ -21,8 +23,9 @@ watchEffect(() => {
             </template>
         </CuraInput>
         <div class="search-results-container" v-if="showResults">
-            <div class="search-result-item">
+            <div class="search-result-item" @click="emit('searchItemClicked', 'test.txt')">
                 <span>test.txt</span>
+                <span class="search-result-item-path">path/to/file</span>
             </div>
         </div>
     </div>
@@ -33,25 +36,35 @@ watchEffect(() => {
     flex-direction: column;
     position: absolute;
     z-index: 100;
-    background-color: var(--md-sys-color-secondary-container);
+    background-color: var(--md-sys-color-surface-container-highest);
     border-radius: 8px;
     padding: 8px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-    color: var(--md-sys-color-on-secondary-container);
     top: 100%;
     width: 100%;
     min-height: 300px;
     margin-top: 8px;
-    padding: inherit;
-    
+    box-sizing: border-box;
+    padding: 8px;
 }
+
 .search-result-item {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px;
+    padding: 16px;
     border-radius: 8px;
     cursor: pointer;
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+.search-result-item-container {
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    position: relative;
 }
 
 .cura-file-search {
@@ -59,5 +72,11 @@ watchEffect(() => {
     flex-direction: column;
     width: 100%;
     position: relative;
+}
+
+.search-result-item-path {
+    font-size: 12px;
+    color: var(--md-sys-color-on-surface-variant);
+    opacity: 0.5;
 }
 </style>

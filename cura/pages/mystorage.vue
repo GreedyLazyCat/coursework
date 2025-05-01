@@ -3,11 +3,14 @@ function filesDropped(files: FileList) {
     console.log(files)
 }
 
+function searchItemClicked(item: string) {
+    console.log(item)
+}
 </script>
 
 <template>
     <div class="my-storage-main-container">
-        <CuraFileSearch class="my-storage-search" />
+        <CuraFileSearch class="my-storage-search" @searchItemClicked="searchItemClicked" />
         <div class="my-storage-text">
             <span>Мое хранилище</span>
         </div>
@@ -29,7 +32,7 @@ function filesDropped(files: FileList) {
             <DragNDropArea class="my-storage-files-container">
                 <CuraStorageItem>
                     <template #icon>
-                        <Icon name="material-symbols:file-present" style="font-size: 20px;"></Icon>
+                        <Icon name="material-symbols:folder" style="font-size: 20px;"></Icon>
                     </template>
                 </CuraStorageItem>
                 <CuraStorageItem>

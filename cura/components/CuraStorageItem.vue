@@ -1,6 +1,8 @@
 <script setup lang="ts">
 defineProps<{
     lastModified?: string;
+    size?: string;
+    name?: string;
 }>();
 </script>
 
@@ -11,13 +13,13 @@ defineProps<{
             <div class="cura-storage-item__icon">
                 <slot name="icon"></slot>
             </div>
-            <span>test.txt</span>
+            <span>{{ name || 'Unknown' }}</span>
         </div>
         <div class="cura-storage-item__modified">
             <span>{{ lastModified || 'Unknown' }}</span>
         </div>
         <div class="cura-storage-item__size">
-            <span>100 KB</span>
+            <span>{{ size || 'Unknown' }}</span>
         </div>
         <div class="cura-storage-item__menu">
             <Icon name="material-symbols:more-vert" />
