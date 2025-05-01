@@ -19,16 +19,6 @@
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="ownerId" id="FB4A3390-11CD-71F0-0B29-C8E8AAEB9AFB">
-<createdBy>htmlw</createdBy>
-<createdTime>2025-04-26 16:22:54 UTC</createdTime>
-<generatorID>6C9DCB04-0ABA-32E8-3E35-08FB85037A59</generatorID>
-<ownerDesignName>model</ownerDesignName>
-<referedAttribute>402D6E3E-0370-E1D2-55A2-036B7C109455</referedAttribute>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-</Attribute>
 <Attribute name="parentId" id="08F72804-1C65-6960-6F3E-FDEC694E184E">
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:13:20 UTC</createdTime>

@@ -3,9 +3,6 @@
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:03:22 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
 <adequatelyNormalized>NO</adequatelyNormalized>
 <expectedVolumes>0</expectedVolumes>
 <fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
@@ -19,9 +16,6 @@
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:03:37 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
@@ -30,9 +24,6 @@
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:03:56 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
@@ -40,9 +31,6 @@
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:04:06 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
@@ -50,9 +38,6 @@
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:04:11 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
@@ -63,9 +48,6 @@
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:03:51 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
 <pk>true</pk>
 <usedAttributes>
 <attributeRef>402D6E3E-0370-E1D2-55A2-036B7C109455</attributeRef>
