@@ -1,16 +1,17 @@
 
 <script setup lang="ts">
-const {name = '', placeholder = '', type='text'} = defineProps<{
+const {name = '', placeholder = '', type='text', hasError = false} = defineProps<{
     name?: string,
     placeholder?: string,
     type?: string,
+    hasError?: boolean,
 }>()
+const model = defineModel<string>({required: false})
 </script>
 <template>
-    <div class="cura-input">
-        
+    <div class="cura-input" :class="{'cura-input--error': hasError}">
         <slot name="leading"></slot>
-        <input :type="type" :name="name" id="" :placeholder="placeholder">
+        <input :type="type" :name="name" id="" :placeholder="placeholder" v-model="model">
         <slot name="trailing"></slot>
     </div>
 </template>
@@ -44,5 +45,9 @@ const {name = '', placeholder = '', type='text'} = defineProps<{
 
 .cura-input input:focus {
     outline: none;
+}
+
+.cura-input--error {
+    border: 1px solid var(--md-sys-color-error);
 }
 </style>

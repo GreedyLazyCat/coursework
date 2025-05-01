@@ -4,6 +4,10 @@ import { ref } from 'vue'
 const showCover = ref(false)
 const emit = defineEmits<{ (e: 'filesDropped', files: FileList): void }>()
 const parent = useTemplateRef('parent')
+const { class: className } = defineProps<{
+    class?: string
+}>()
+
 
 function drop(e: DragEvent) {
     showCover.value = false
@@ -20,7 +24,7 @@ function dragLeave(e: DragEvent) {
 </script>
 <template>
     <div ref="parent" class="DragNDropArea" @drop.prevent="drop" @dragover.prevent="" @dragenter.prevent="showCover = true"
-        @dragleave="dragLeave">
+        @dragleave="dragLeave" :class="className">
         <slot></slot>
         <div class="DragNDropAreaCover" v-if="showCover">
             <div class="DragNDropAreaContent">
@@ -35,6 +39,7 @@ function dragLeave(e: DragEvent) {
     height: 100%;
     width: 100%;
     overflow: scroll;
+    position: relative;
 }
 
 
@@ -45,7 +50,7 @@ function dragLeave(e: DragEvent) {
     position: absolute;
     height: 100%;
     width: 100%;
-    background: rgba(255, 255, 255, 0.21);
+    background: var(--md-sys-color-surface-container-highest);
     backdrop-filter: blur(5.2px);
     -webkit-backdrop-filter: blur(5.2px);
     pointer-events: none;
@@ -55,7 +60,7 @@ function dragLeave(e: DragEvent) {
     position: absolute;
     height: 90%;
     width: 90%;
-    outline: 2px dashed var(--md-sys-color-primary);
+    outline: 2px dashed var(--md-sys-color-on-primary-container);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -66,7 +71,7 @@ function dragLeave(e: DragEvent) {
 }
 
 .DragNDropAreaContent span {
-    color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary-container);
     font-size: 1.2rem;
     text-align: center;
 }

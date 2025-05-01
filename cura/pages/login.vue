@@ -10,9 +10,14 @@ const showPassword = ref(false)
 const icon = computed(() => showPassword.value ? "material-symbols:visibility-off-outline" : "material-symbols:visibility-outline")
 const inputType = computed(() => showPassword.value ? "text" : "password")
 
+const username = ref('')
+const password = ref('')
+
 function changeVisibility() {
     showPassword.value = !showPassword.value;
 }
+
+
 
 </script>
 <template>
@@ -28,13 +33,13 @@ function changeVisibility() {
                     </svg>
                 </div>
                 <form action="" @submit.prevent>
-                    <CuraInput placeholder="Имя пользователя" name="password" type="text">
+                    <CuraInput placeholder="Имя пользователя" name="password" type="text" v-model="username" :hasError="true">
                         <template #leading>
                             <Icon name="material-symbols:account-circle-outline" style="font-size: 20px;"></Icon>
                         </template>
                     </CuraInput>
                     <div class="login-form-item__feedback"></div>
-                    <CuraInput placeholder="Пароль" name="password" :type="inputType">
+                    <CuraInput placeholder="Пароль" name="password" :type="inputType" v-model="password">
                         <template #leading>
                             <Icon name="material-symbols:lock" style="font-size: 20px;"></Icon>
                         </template>
