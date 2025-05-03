@@ -11,9 +11,8 @@ function searchItemClicked(item: string) {
 <template>
     <div class="my-storage-main-container">
         <CuraFileSearch class="my-storage-search" @searchItemClicked="searchItemClicked" />
-        <div class="my-storage-text">
-            <span>Мое хранилище</span>
-        </div>
+       
+        <h1>Мое хранилище</h1>
         <div class="my-storage-grid-header">
             <div class="my-storage-grid-header-item">
                 <span>Имя</span>
@@ -29,18 +28,18 @@ function searchItemClicked(item: string) {
                 <Icon name="material-symbols:more-vert" />
             </div>
         </div>
-            <DragNDropArea class="my-storage-files-container">
-                <CuraStorageItem>
-                    <template #icon>
-                        <Icon name="material-symbols:folder" style="font-size: 20px;"></Icon>
-                    </template>
-                </CuraStorageItem>
-                <CuraStorageItem>
-                    <template #icon>
-                        <Icon name="material-symbols:file-present" style="font-size: 20px;"></Icon>
-                    </template>
-                </CuraStorageItem>
-            </DragNDropArea>
+        <DragNDropArea class="my-storage-files-container">
+            <CuraStorageItem>
+                <template #icon>
+                    <Icon name="material-symbols:folder" style="font-size: 20px;"></Icon>
+                </template>
+            </CuraStorageItem>
+            <CuraStorageItem>
+                <template #icon>
+                    <Icon name="material-symbols:file-present" style="font-size: 20px;"></Icon>
+                </template>
+            </CuraStorageItem>
+        </DragNDropArea>
     </div>
 </template>
 <style>
@@ -71,12 +70,13 @@ function searchItemClicked(item: string) {
 }
 
 
-.my-storage-text {
+.my-storage-main-container h1 {
     display: flex;
     align-items: center;
     font-size: 24px;
     font-weight: 500;
     color: var(--md-sys-color-on-surface);
+    margin: 0;
 }
 
 .my-storage-grid-header {

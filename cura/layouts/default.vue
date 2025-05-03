@@ -37,12 +37,16 @@ const theme = computed(() => prefersDark.value ? "dark" : "light")
                     <CuraNav>
                         <CuraNavItem to="/home">Главная</CuraNavItem>
                         <CuraNavItem to="/mystorage">Мое хранилище</CuraNavItem>
+                        <CuraNavItem to="/loadqueue">Очередь загрузки</CuraNavItem>
                     </CuraNav>
                 </div>
                 <div class="storage-sidebar-bottom-items">
                     <div class="loading-files-container">
-                        <span>Загрузка 0/2</span>
-                        <div class="loading-files-progress"></div>
+                        <span>Загрузка файлов: 0/2</span>
+                        <CuraProgress />
+                        <button class="cura-btn" @click="navigateTo('/loadqueue')">
+                            Подробнее
+                        </button>
                     </div>
                 </div>
             </div>
@@ -137,4 +141,38 @@ const theme = computed(() => prefersDark.value ? "dark" : "light")
     color: var(--md-sys-color-on-surface-variant);
     font-size: 12px;
 }
+
+.loading-files-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 14px;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+
+
+.cura-btn {
+    border: 1px solid var(--md-sys-color-outline);
+    padding: 8px 12px;
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    font-size: var(--input-font-size);
+    border-radius: var(--input-border-radius);
+}
+
+.cura-btn:hover {
+    cursor: pointer;
+}
+
+.loading-files-container .cura-btn {
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+
 </style>
