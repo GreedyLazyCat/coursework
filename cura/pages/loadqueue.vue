@@ -2,11 +2,39 @@
     <div class="loadqueue-main-container">
         <h1>Очередь загрузки</h1>
         <div class="loadqueue-item-container">
-            <span>Загрузка файлов: 0/2</span>
+            <div class="loadqueue-item-container-header">
+                <span>Загрузка файлов: 0/2</span>
+                <div class="loadqueue-item-container-header__buttons">
+                    <button class="cura-btn">
+                        Остановить все
+                    </button>
+                    <button class="cura-btn">
+                        Удалить все
+                    </button>
+                </div>
+            </div>
             <div class="loadqueue-item">
                 <div class="loadqueue-item-info-container">
                     <div class="loadqueue-item-info">
                         <span class="loadqueue-item-info__name">Файл 1</span>
+                        <span class="loadqueue-item-info__path">path/to/file.txt</span>
+                    </div>
+                    <div class="loadqueue-item-controls">
+                        <button class="cura-btn">
+                            <Icon name="material-symbols:pause" />
+                        </button>
+                        <button class="cura-btn">
+                            <Icon name="material-symbols:delete" />
+                        </button>
+                    </div>
+                </div>
+
+                <CuraProgress />
+            </div>
+            <div class="loadqueue-item">
+                <div class="loadqueue-item-info-container">
+                    <div class="loadqueue-item-info">
+                        <span class="loadqueue-item-info__name">Файл 2</span>
                         <span class="loadqueue-item-info__path">path/to/file.txt</span>
                     </div>
                     <div class="loadqueue-item-controls">
@@ -82,6 +110,20 @@
 }
 
 .loadqueue-item-controls {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.loadqueue-item-container-header {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.loadqueue-item-container-header__buttons {
     display: flex;
     flex-direction: row;
     gap: 8px;

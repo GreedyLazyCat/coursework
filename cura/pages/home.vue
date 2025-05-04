@@ -1,5 +1,12 @@
+<script setup lang="ts">
+import '~/assets/css/storage.css'
+</script>
 <template>
     <div class="home-main-container">
+        <h1>Рекомендации</h1>
+        <div class="home-recommendations-container">
+            Здесь возможно будут рекомендации...
+        </div>
         <h1>Недавние файлы</h1>
         <div class="my-storage-grid-header">
             <div class="my-storage-grid-header-item">
@@ -46,4 +53,10 @@
     margin: 0;
 }
 
+.home-recommendations-container {
+    color: var(--md-sys-color-on-surface);
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0;
+}
 </style>
