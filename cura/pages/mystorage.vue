@@ -11,7 +11,7 @@ function searchItemClicked(item: string) {
 
 <template>
     <div class="my-storage-main-container">
-        <CuraFileInfo name="test" path="test" />
+        <!-- <CuraFileInfo name="test" path="test" /> -->
         <CuraFileSearch class="my-storage-search" @searchItemClicked="searchItemClicked" />
        
         <h1>Мое хранилище</h1>
@@ -27,11 +27,11 @@ function searchItemClicked(item: string) {
                 <span>Размер</span>
             </div>
             <div class="my-storage-grid-header-item my-storage-grid-header-item-actions">
-                <Icon name="material-symbols:more-vert" />
+                <Icon name="material-symbols:more-vert" class="icon"/>
             </div>
         </div>
         <DragNDropArea class="my-storage-files-container">
-            <CuraStorageItem>
+            <CuraStorageItem isSelected>
                 <template #icon>
                     <Icon name="material-symbols:folder" style="font-size: 20px;"></Icon>
                 </template>

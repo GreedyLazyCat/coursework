@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Просто идеи.md",
+                "file": "Гайды Заметки/Полезности.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Просто идеи"
+              "title": "Полезности"
             }
           }
         ],
@@ -214,13 +214,13 @@
   "active": "594bb2835196517a",
   "lastOpenFiles": [
     "Референсы Дизайна.md",
+    "Просто идеи.md",
     "Гайды Заметки/Полезности.md",
     "Гайды Заметки/Находки.md",
     "Гайды Заметки/Nuxt.md",
     "Гайды Заметки/Postgre Fast Guide.md",
     "Задачи.md",
     "Использованные технологии.md",
-    "Просто идеи.md",
     "Курсовая - Main.md",
     "README 1.md",
     "README.md",

@@ -1,13 +1,17 @@
 <script setup lang="ts">
-defineProps<{
+const {lastModified, size, name, isSelected = false}= defineProps<{
     lastModified?: string;
     size?: string;
     name?: string;
+    isSelected?: boolean;
 }>();
+
+
+
 </script>
 
 <template>
-    <div class="cura-storage-item">
+    <div class="cura-storage-item" :class="{'cura-storage-item--selected': isSelected}">
 
         <div class="cura-storage-item__name">
             <div class="cura-storage-item__icon">
@@ -22,8 +26,9 @@ defineProps<{
             <span>{{ size || 'Unknown' }}</span>
         </div>
         <div class="cura-storage-item__menu">
-            <Icon name="material-symbols:more-vert" />
-            <slot name="menu"></slot>
+            <div class="cura-storage-item__menu-item">
+                <Icon name="material-symbols:more-vert" />
+            </div>
         </div>
     </div>
 </template>
@@ -33,7 +38,7 @@ defineProps<{
     display: grid;
     grid-template-columns: 3fr 1fr 1fr 1fr;
     border-radius: 8px;
-    padding: 16px;
+    padding: 12px;
     background-color: var(--md-sys-color-surface-container);
     color: var(--md-sys-color-on-surface);
     gap: 16px;
@@ -72,6 +77,31 @@ defineProps<{
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.cura-storage-item:hover{
+    background-color: var(--md-sys-color-surface-container-high);
+}
+
+.cura-storage-item__menu-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+.cura-storage-item__menu-item:hover{
+    cursor: pointer;
+    background-color: var(--md-sys-color-surface-bright);
+}
+
+.cura-storage-item--selected{
+    background-color: var(--md-sys-color-surface-container-highest);
+}
+
+.cura-storage-item--selected:hover{
+    background-color: var(--md-sys-color-surface-container-highest);
 }
 
 
