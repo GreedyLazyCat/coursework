@@ -13,16 +13,14 @@ function openContextMenu(e: MouseEvent) {
 <template>
     <div class="cura-storage-item" :class="{ 'cura-storage-item--selected': isSelected }">
         <CuraContextMenu class="cura-context-menu">
-            <template #content>
-                <div class="cura-context-menu-item">
-                    <Icon name="material-symbols:edit" />
-                    <span>Переименовать</span>
-                </div>
-                <div class="cura-context-menu-item" @click="console.log(`delete ${name}`)">
-                    <Icon name="material-symbols:delete" />
-                    <span>Удалить</span>
-                </div>
-            </template>
+            <div class="cura-context-menu-item">
+                <Icon name="material-symbols:edit" />
+                <span>Переименовать</span>
+            </div>
+            <div class="cura-context-menu-item" @click="console.log(`delete ${name}`)">
+                <Icon name="material-symbols:delete" />
+                <span>Удалить</span>
+            </div>
         </CuraContextMenu>
         <div class="cura-storage-item__name">
             <div class="cura-storage-item__icon">

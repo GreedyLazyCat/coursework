@@ -48,7 +48,7 @@ onMounted(() => {
     <div class="cura-context-menu-root" ref="menuRootRef" @contextmenu.prevent="open">
         <div class="cura-context-menu-content" v-show="isOpen" ref="menuContentRef"
             :style="{ top: state.top + 'px', left: state.left + 'px', opacity: state.opacity }" :class="className">
-            <slot name="content"></slot>
+            <slot ></slot>
         </div>
     </div>
 </template>
