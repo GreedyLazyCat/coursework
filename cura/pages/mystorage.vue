@@ -11,8 +11,9 @@ function searchItemClicked(item: string) {
 
 <template>
     <div class="my-storage-main-container">
-        <!-- <CuraFileInfo name="test" path="test" /> -->
-        <div class="cura-selection-toolbar">
+
+        <CuraFileInfo name="test" path="test" v-if="false" />
+        <div class="cura-selection-toolbar" v-if="false">
             <div class="cura-selection-toolbar-left-items">
                 <div class="cura-icon-button">
                     <Icon name="material-symbols:close" class="icon" />
@@ -44,12 +45,20 @@ function searchItemClicked(item: string) {
             </div>
         </div>
         <DragNDropArea class="my-storage-files-container">
-            <CuraStorageItem isSelected>
+            <CuraContextMenu class="cura-context-menu">
+                <template #content>
+                    <div class="cura-context-menu-item">
+                        <Icon name="material-symbols:create-new-folder" />
+                        <span>Создать папку</span>
+                    </div>
+                </template>
+            </CuraContextMenu>
+            <CuraStorageItem isSelected name="test" lastModified="2021-01-01" size="100">
                 <template #icon>
                     <Icon name="material-symbols:folder" style="font-size: 20px;"></Icon>
                 </template>
             </CuraStorageItem>
-            <CuraStorageItem>
+            <CuraStorageItem name="test2" lastModified="2021-01-01" size="100">
                 <template #icon>
                     <Icon name="material-symbols:file-present" style="font-size: 20px;"></Icon>
                 </template>
@@ -90,6 +99,7 @@ function searchItemClicked(item: string) {
     align-items: center;
     gap: 10px;
 }
+
 .cura-icon-button {
     display: flex;
     align-items: center;
@@ -98,10 +108,12 @@ function searchItemClicked(item: string) {
     height: 32px;
     border-radius: 50%;
 }
+
 .cura-icon-button:hover {
     background-color: var(--md-sys-color-surface-container-highest);
     cursor: pointer;
 }
+
 .cura-icon-button .icon {
     font-size: 20px;
 }

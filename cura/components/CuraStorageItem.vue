@@ -1,15 +1,29 @@
 <script setup lang="ts">
-const {lastModified, size, name, isSelected = false}= defineProps<{
+const { lastModified, size, name, isSelected = false } = defineProps<{
     lastModified?: string;
     size?: string;
     name?: string;
     isSelected?: boolean;
 }>();
+
+function openContextMenu(e: MouseEvent) {
+}
 </script>
 
 <template>
-    <div class="cura-storage-item" :class="{'cura-storage-item--selected': isSelected}">
-
+    <div class="cura-storage-item" :class="{ 'cura-storage-item--selected': isSelected }">
+        <CuraContextMenu class="cura-context-menu">
+            <template #content>
+                <div class="cura-context-menu-item">
+                    <Icon name="material-symbols:edit" />
+                    <span>Переименовать</span>
+                </div>
+                <div class="cura-context-menu-item" @click="console.log(`delete ${name}`)">
+                    <Icon name="material-symbols:delete" />
+                    <span>Удалить</span>
+                </div>
+            </template>
+        </CuraContextMenu>
         <div class="cura-storage-item__name">
             <div class="cura-storage-item__icon">
                 <slot name="icon"></slot>
@@ -23,15 +37,17 @@ const {lastModified, size, name, isSelected = false}= defineProps<{
             <span>{{ size || 'Unknown' }}</span>
         </div>
         <div class="cura-storage-item__menu">
-            <div class="cura-storage-item__menu-item">
+            <div class="cura-storage-item__menu-item" @mouseup="openContextMenu">
                 <Icon name="material-symbols:more-vert" />
             </div>
         </div>
+
     </div>
 </template>
 
 <style>
 .cura-storage-item {
+    position: relative;
     display: grid;
     grid-template-columns: 3fr 1fr 1fr 1fr;
     border-radius: 8px;
@@ -64,23 +80,24 @@ const {lastModified, size, name, isSelected = false}= defineProps<{
     align-items: center;
     justify-content: flex-end;
 }
-.cura-storage-item__name{
+
+.cura-storage-item__name {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.cura-storage-item__size{
+.cura-storage-item__size {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.cura-storage-item:hover{
+.cura-storage-item:hover {
     background-color: var(--md-sys-color-surface-container-high);
 }
 
-.cura-storage-item__menu-item{
+.cura-storage-item__menu-item {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -88,18 +105,42 @@ const {lastModified, size, name, isSelected = false}= defineProps<{
     height: 32px;
     border-radius: 50%;
 }
-.cura-storage-item__menu-item:hover{
+
+.cura-storage-item__menu-item:hover {
     cursor: pointer;
     background-color: var(--md-sys-color-surface-bright);
 }
 
-.cura-storage-item--selected{
+.cura-storage-item--selected {
     background-color: var(--md-sys-color-surface-container-highest);
 }
 
-.cura-storage-item--selected:hover{
+.cura-storage-item--selected:hover {
     background-color: var(--md-sys-color-surface-container-highest);
 }
 
+.cura-context-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: var(--md-sys-color-surface-container);
+    border-radius: 8px;
+    padding: 8px;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    width: 250px;
+    color: var(--md-sys-color-on-surface);
+}
 
+.cura-context-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.cura-context-menu-item:hover {
+    background-color: var(--md-sys-color-surface-container-high);
+}
 </style>
