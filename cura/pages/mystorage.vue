@@ -46,12 +46,10 @@ function searchItemClicked(item: string) {
         </div>
         <DragNDropArea class="my-storage-files-container">
             <CuraContextMenu class="cura-context-menu">
-                <template #content>
                     <div class="cura-context-menu-item">
                         <Icon name="material-symbols:create-new-folder" />
                         <span>Создать папку</span>
                     </div>
-                </template>
             </CuraContextMenu>
             <CuraStorageItem isSelected name="test" lastModified="2021-01-01" size="100">
                 <template #icon>
