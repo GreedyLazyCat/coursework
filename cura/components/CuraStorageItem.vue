@@ -5,9 +5,6 @@ const {lastModified, size, name, isSelected = false}= defineProps<{
     name?: string;
     isSelected?: boolean;
 }>();
-
-
-
 </script>
 
 <template>

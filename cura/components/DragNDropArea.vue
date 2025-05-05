@@ -44,7 +44,7 @@ function dragLeave(e: DragEvent) {
 
 
 .DragNDropAreaCover {
-    z-index: 100;
+    z-index: 50;
     left: 0;
     top: 0;
     position: absolute;
