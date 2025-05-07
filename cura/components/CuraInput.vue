@@ -8,6 +8,9 @@ const { name = '', placeholder = '', type = 'text', hasError = false } = defineP
 const model = defineModel<string>({ required: false })
 const inputRef = useTemplateRef('inputRef')
 const focused = ref(false)
+const emit = defineEmits<{
+    (e: 'focusChanged', isFocuse: boolean): void
+}>()
 
 const handleClick = (e: MouseEvent) => {
     if (e.target !== inputRef.value) {
@@ -15,13 +18,21 @@ const handleClick = (e: MouseEvent) => {
     }
     inputRef.value?.focus()
 }
+function focus(){
+    focused.value = true
+    emit('focusChanged', true)
+}
+function blur(){
+    focused.value = false
+    emit('focusChanged', false)
+}
 </script>
 <template>
     <div class="cura-input" :class="{ 'cura-input--focused': focused, 'cura-input--error': hasError }"
         @mousedown="handleClick">
         <slot name="leading"></slot>
         <input :type="type" :name="name" id="" :placeholder="placeholder" v-model="model" ref="inputRef"
-            @focus="focused = true" @blur="focused = false">
+            @focus="focus" @blur="blur">
         <slot name="trailing"></slot>
     </div>
 </template>

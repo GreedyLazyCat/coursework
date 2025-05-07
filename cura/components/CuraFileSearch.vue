@@ -4,6 +4,7 @@ const { class: className } = defineProps<{
 }>()
 const search = ref('')
 const showResults = ref(false)
+const showCloseButton = computed(() => search.value !== '')
 
 const emit = defineEmits<{ (e: 'searchItemClicked', item: string): void }>()
 
@@ -14,12 +15,39 @@ watchEffect(() => {
         showResults.value = false
     }
 })
+
+const onOutsideClick = (e: MouseEvent) => {
+    if (!e.target) return
+    if (!(e.target as HTMLElement).closest('.cura-file-search')) {
+        showResults.value = false
+    }
+}
+function handleFocusChange(isFocused: boolean) {
+    if (isFocused && search.value !== '') {
+        showResults.value = true
+    }
+}
+function clearInput(){
+    search.value = ''
+    showResults.value = false
+}
+
+onMounted(() => {
+    document.addEventListener('click', onOutsideClick)
+})
+onUnmounted(() => {
+    document.removeEventListener('click', onOutsideClick)
+})
 </script>
 <template>
     <div class="cura-file-search" :class="className">
-        <CuraInput placeholder="Поиск по файлам" name="search" type="text" v-model="search">
+        <CuraInput @focus-changed="handleFocusChange" placeholder="Поиск по файлам" name="search" type="text"
+            v-model="search">
             <template #leading>
                 <Icon name="material-symbols:search" style="font-size: 20px;"></Icon>
+            </template>
+            <template #trailing>
+                <Icon class="cura-file-search-close-button" @click="clearInput" v-if="showCloseButton" name="material-symbols:close" style="font-size: 20px;"></Icon>
             </template>
         </CuraInput>
         <div class="search-results-container" v-if="showResults">
@@ -78,5 +106,8 @@ watchEffect(() => {
     font-size: 12px;
     color: var(--md-sys-color-on-surface-variant);
     opacity: 0.5;
+}
+.cura-file-search-close-button{
+    cursor: pointer;
 }
 </style>

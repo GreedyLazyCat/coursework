@@ -16,7 +16,7 @@ function clickedOutsideModal(){
 
 <template>
     <div class="my-storage-main-container">
-        <CuraModal :show-modal="showModal" @clicked-outside="clickedOutsideModal">test</CuraModal>
+        <CuraModal modal-title="test" :show-modal="showModal" @clicked-outside="clickedOutsideModal">test</CuraModal>
         <CuraFileInfo name="test" path="test" v-if="false" />
         <div class="cura-selection-toolbar" v-if="false">
             <div class="cura-selection-toolbar-left-items">
