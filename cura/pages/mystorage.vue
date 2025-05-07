@@ -4,14 +4,19 @@ function filesDropped(files: FileList) {
     console.log(files)
 }
 
+const showModal = ref(false)
 function searchItemClicked(item: string) {
     console.log(item)
+    showModal.value = true
+}
+function clickedOutsideModal(){
+    showModal.value = false
 }
 </script>
 
 <template>
     <div class="my-storage-main-container">
-
+        <CuraModal :show-modal="showModal" @clicked-outside="clickedOutsideModal">test</CuraModal>
         <CuraFileInfo name="test" path="test" v-if="false" />
         <div class="cura-selection-toolbar" v-if="false">
             <div class="cura-selection-toolbar-left-items">

@@ -11,9 +11,12 @@ onMounted(() => {
 
 const theme = computed(() => prefersDark.value ? "dark" : "light")
 
+
+
 </script>
 <template>
     <div class="main-container" :class="theme">
+        <div id="modal-teleports"></div>
         <div class="storage-main-container">
             <div>
                 <div class="sidbar-top-items">

@@ -5,7 +5,7 @@ const { lastModified, size, name, isSelected = false } = defineProps<{
     name?: string;
     isSelected?: boolean;
 }>();
-
+const test = ref('fasdfsdf')
 function openContextMenu(e: MouseEvent) {
 }
 </script>
