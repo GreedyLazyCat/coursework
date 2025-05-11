@@ -8,6 +8,8 @@
 dist
 
 postgres_data
+prisma/generated
+prisma/migrations
 
 # Node dependencies
 node_modules
