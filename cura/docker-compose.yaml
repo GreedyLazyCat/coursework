@@ -9,3 +9,11 @@ services:
       - ./postgres_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+  cura:
+    build: .
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
