@@ -7,6 +7,6 @@ import * as schema from '~/server/db/schema'
 export const tables = schema
 
 export function useDrizzle() {
-  return drizzle(process.env.DATABASE_URL!, { schema })
+  return drizzle(`postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}` , { schema })
 }
 
