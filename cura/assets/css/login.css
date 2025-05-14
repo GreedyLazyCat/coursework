@@ -52,12 +52,20 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    margin-bottom: 28px;
 }
 
 .login-form-item__feedback {
-    height: 24px;
+    height: 28px;
     width: 100%;
+    color: var(--md-sys-color-error);
+    display: flex;
+    align-items: center;
 }
+.login-form-item__feedback span {
+    font-size: 12px;
+}
+
 
 .login-title span {
     font-size: 2.8rem;
@@ -88,4 +96,12 @@
     justify-content: center;
     color: var(--md-sys-color-primary);
     font-size: medium;
+}
+
+.login-form__error {
+    height: 28px;
+    width: 100%;
+    color: var(--md-sys-color-error);
+    display: flex;
+    align-items: center;
 }

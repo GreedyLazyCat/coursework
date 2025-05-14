@@ -1,11 +1,10 @@
 <script setup lang="ts">
-const { name = '', placeholder = '', type = 'text', hasError = false, feedbackClass = '' } = defineProps<{
+const { name = '', placeholder = '', type = 'text', hasError = false } = defineProps<{
     name?: string,
     placeholder?: string,
     type?: string,
     hasError?: boolean,
     input?: () => void,
-    feedbackClass?: string,
 }>()
 const model = defineModel<string>({ required: false })
 const inputRef = useTemplateRef('inputRef')
@@ -20,7 +19,9 @@ const handleClick = (e: MouseEvent) => {
     }
     inputRef.value?.focus()
 }
+
 const slots = useSlots()
+
 const renderFeedback = computed(() => {
     return !!slots.feedback
 })
@@ -43,9 +44,7 @@ function blur() {
                 @focus="focus" @blur="blur" @input="input">
             <slot name="trailing"></slot>
         </div>
-        <div v-if="renderFeedback" :class="feedbackClass">
-            <slot name="feedback"></slot>
-        </div>
+        <slot v-if="renderFeedback" name="feedback"></slot>
     </div>
 </template>
 <style>

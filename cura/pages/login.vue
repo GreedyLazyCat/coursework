@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { fetch: refreshSession } = useUserSession()
 definePageMeta(
     {
         layout: 'login-layout'
@@ -12,29 +13,45 @@ const inputType = computed(() => showPassword.value ? "text" : "password")
 const username = ref('')
 const password = ref('')
 
+const usernameFeedback = ref('')
+const passwordFeedback = ref('')
+const errorMessage = ref('')
+
 const usernameHasError = ref(false)
 const passwordHasError = ref(false)
 
 function changeVisibility() {
     showPassword.value = !showPassword.value;
 }
-function onSubmit() {
+async function onSubmit() {
     if (username.value === '') {
         usernameHasError.value = true
+        usernameFeedback.value = 'Поле логин должно быть заполненным'
     }
     if (password.value === '') {
         passwordHasError.value = true
+        passwordFeedback.value = 'Поле пароль должно быть заполненным'
     }
     if (passwordHasError.value || usernameHasError.value) {
         return
+    }
+    try {
+        const data = await $fetch('/api/login', { method: 'POST', body: { username: username.value, password: password.value } })
+        await refreshSession()
+        await navigateTo('/home')
+    }
+    catch (e) {
+        errorMessage.value = 'Неверный логин или пароль'
     }
 }
 
 watch(username, () => {
     usernameHasError.value = false
+    usernameFeedback.value = ''
 })
 watch(password, () => {
     passwordHasError.value = false
+    passwordFeedback.value = ''
 })
 </script>
 <template>
@@ -50,15 +67,22 @@ watch(password, () => {
                     </svg>
                 </div>
                 <form action="" @submit.prevent="onSubmit">
+                    <div class="login-form__error">
+                        <span>{{ errorMessage }}</span>
+                    </div>
                     <CuraInput placeholder="Имя пользователя" name="password" type="text" v-model.trim="username"
                         :has-error="usernameHasError">
                         <template #leading>
                             <Icon name="material-symbols:account-circle-outline" style="font-size: 20px;"></Icon>
                         </template>
+                        <template #feedback>
+                            <div class="login-form-item__feedback">
+                                <span>{{ usernameFeedback }}</span>
+                            </div>
+                        </template>
                     </CuraInput>
                     <CuraInput placeholder="Пароль" name="password" :type="inputType" v-model.trim="password"
-                        :has-error="passwordHasError"
-                        feedback-class="form-input__feedback">
+                        :has-error="passwordHasError">
                         <template #leading>
                             <Icon name="material-symbols:lock" style="font-size: 20px;"></Icon>
                         </template>
@@ -66,8 +90,13 @@ watch(password, () => {
                             <Icon :name="icon" @mouseup="changeVisibility" style="font-size: 20px;"
                                 class="cura-input-show-password"></Icon>
                         </template>
+                        <template #feedback>
+                            <div class="login-form-item__feedback">
+                                <span>{{ passwordFeedback }}</span>
+                            </div>
+                        </template>
                     </CuraInput>
-                    <button @click="onSubmit" class="login-btn">Войти</button>
+                    <button class="login-btn">Войти</button>
                 </form>
             </div>
         </div>
