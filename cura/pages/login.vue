@@ -4,7 +4,6 @@ definePageMeta(
         layout: 'login-layout'
     }
 )
-
 const showPassword = ref(false)
 
 const icon = computed(() => showPassword.value ? "material-symbols:visibility-off-outline" : "material-symbols:visibility-outline")
@@ -13,12 +12,30 @@ const inputType = computed(() => showPassword.value ? "text" : "password")
 const username = ref('')
 const password = ref('')
 
+const usernameHasError = ref(false)
+const passwordHasError = ref(false)
+
 function changeVisibility() {
     showPassword.value = !showPassword.value;
 }
+function onSubmit() {
+    if (username.value === '') {
+        usernameHasError.value = true
+    }
+    if (password.value === '') {
+        passwordHasError.value = true
+    }
+    if (passwordHasError.value || usernameHasError.value) {
+        return
+    }
+}
 
-
-
+watch(username, () => {
+    usernameHasError.value = false
+})
+watch(password, () => {
+    passwordHasError.value = false
+})
 </script>
 <template>
     <div class="login-main-container">
@@ -32,14 +49,16 @@ function changeVisibility() {
                             fill="currentColor" />
                     </svg>
                 </div>
-                <form action="" @submit.prevent>
-                    <CuraInput placeholder="Имя пользователя" name="password" type="text" v-model="username" :hasError="true">
+                <form action="" @submit.prevent="onSubmit">
+                    <CuraInput placeholder="Имя пользователя" name="password" type="text" v-model.trim="username"
+                        :has-error="usernameHasError">
                         <template #leading>
                             <Icon name="material-symbols:account-circle-outline" style="font-size: 20px;"></Icon>
                         </template>
                     </CuraInput>
-                    <div class="login-form-item__feedback"></div>
-                    <CuraInput placeholder="Пароль" name="password" :type="inputType" v-model="password">
+                    <CuraInput placeholder="Пароль" name="password" :type="inputType" v-model.trim="password"
+                        :has-error="passwordHasError"
+                        feedback-class="form-input__feedback">
                         <template #leading>
                             <Icon name="material-symbols:lock" style="font-size: 20px;"></Icon>
                         </template>
@@ -48,8 +67,7 @@ function changeVisibility() {
                                 class="cura-input-show-password"></Icon>
                         </template>
                     </CuraInput>
-                    <div class="login-form-item__feedback"></div>
-                    <button class="login-btn" @mouseup="navigateTo({ path: '/home' })">Войти</button>
+                    <button @click="onSubmit" class="login-btn">Войти</button>
                 </form>
             </div>
         </div>

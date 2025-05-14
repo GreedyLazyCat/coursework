@@ -1,9 +1,11 @@
 <script setup lang="ts">
-const { name = '', placeholder = '', type = 'text', hasError = false } = defineProps<{
+const { name = '', placeholder = '', type = 'text', hasError = false, feedbackClass = '' } = defineProps<{
     name?: string,
     placeholder?: string,
     type?: string,
     hasError?: boolean,
+    input?: () => void,
+    feedbackClass?: string,
 }>()
 const model = defineModel<string>({ required: false })
 const inputRef = useTemplateRef('inputRef')
@@ -18,22 +20,32 @@ const handleClick = (e: MouseEvent) => {
     }
     inputRef.value?.focus()
 }
-function focus(){
+const slots = useSlots()
+const renderFeedback = computed(() => {
+    return !!slots.feedback
+})
+
+function focus() {
     focused.value = true
     emit('focusChanged', true)
 }
-function blur(){
+function blur() {
     focused.value = false
     emit('focusChanged', false)
 }
 </script>
 <template>
-    <div class="cura-input" :class="{ 'cura-input--focused': focused, 'cura-input--error': hasError }"
-        @mousedown="handleClick">
-        <slot name="leading"></slot>
-        <input :type="type" :name="name" id="" :placeholder="placeholder" v-model="model" ref="inputRef"
-            @focus="focus" @blur="blur">
-        <slot name="trailing"></slot>
+    <div class="cura-input-container">
+        <div class="cura-input" :class="{ 'cura-input--focused': focused, 'cura-input--error': hasError }"
+            @mousedown="handleClick">
+            <slot name="leading"></slot>
+            <input :type="type" :name="name" id="" :placeholder="placeholder" v-model="model" ref="inputRef"
+                @focus="focus" @blur="blur" @input="input">
+            <slot name="trailing"></slot>
+        </div>
+        <div v-if="renderFeedback" :class="feedbackClass">
+            <slot name="feedback"></slot>
+        </div>
     </div>
 </template>
 <style>
@@ -72,8 +84,8 @@ function blur(){
 .cura-input--focused {
     outline: 2px solid var(--md-sys-color-primary);
 }
+
 .cura-input--error {
     outline: 2px solid var(--md-sys-color-error);
 }
-
 </style>
