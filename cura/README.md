@@ -6,4 +6,6 @@ DB_PASSWORD=
 DB_NAME=
 DB_PORT=
 DB_HOST=
+# Пароль для шифрования куки сессии длинной 32 символа
+NUXT_SESSION_PASSWORD=
 ```
