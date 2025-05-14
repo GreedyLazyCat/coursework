@@ -2,9 +2,9 @@ services:
   db:
     image: postgres:16
     environment:
-      POSTGRES_USER: ${DB_USER} 
-      POSTGRES_PASSWORD: ${DB_PASSWORD}  
-      POSTGRES_DB: ${DB_NAME} 
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
     ports:
@@ -12,11 +12,12 @@ services:
   cura:
     build: .
     environment:
-      DB_USER: ${DB_USER} 
-      DB_PASSWORD: ${DB_PASSWORD} 
-      DB_HOST: ${DB_HOST} 
-      DB_NAME: ${DB_NAME} 
-      DB_PORT: ${DB_PORT} 
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+      - NUXT_SESSION_PASSWORD=${NUXT_SESSION_PASSWORD}
     ports:
       - 3000:3000
     depends_on:
