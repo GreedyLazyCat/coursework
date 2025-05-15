@@ -5,7 +5,8 @@ DB_USER=
 DB_PASSWORD=
 DB_NAME=
 DB_PORT=
-DB_HOST=
+# Тут должно быть название сервиса базы данных, которое указано в docker compose
+DB_HOST=db
 # Пароль для шифрования куки сессии длинной 32 символа
 NUXT_SESSION_PASSWORD=
 ```
