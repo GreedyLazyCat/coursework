@@ -1,11 +1,19 @@
 <script setup lang="ts">
-const {clear} = useUserSession()
-async function logout(){
+const { clear } = useUserSession()
+async function logout() {
     await clear()
     await navigateTo('/login')
 }
 </script>
 
 <template>
-    <button @click="logout">Выйти</button>
+    <div class="page-main-container">
+        <button class="cura-btn">
+            Выйти
+        </button>
+    </div>
 </template>
+
+<style>
+
+</style>

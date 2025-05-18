@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import '~/assets/css/storage.css'
+import ChecksumService from '~/lib/hasihgService'
 
+const hashService = new ChecksumService 
 
-function filesDropped(files: FileList) {
-    console.log(files)
+async function filesDropped(files: FileList) {
+    for (const file of files) {
+        console.log(file.size)
+        console.log(await hashService.sha256(file))
+    }
 }
 
 const showModal = ref(false)
@@ -11,13 +16,13 @@ function searchItemClicked(item: string) {
     console.log(item)
     showModal.value = true
 }
-function clickedOutsideModal(){
+function clickedOutsideModal() {
     showModal.value = false
 }
 </script>
 
 <template>
-    <div class="my-storage-main-container">
+    <div class="page-main-container">
         <CuraModal modal-title="test" :show-modal="showModal" @clicked-outside="clickedOutsideModal">test</CuraModal>
         <CuraFileInfo name="test" path="test" v-if="false" />
         <div class="cura-selection-toolbar" v-if="false">
@@ -35,7 +40,7 @@ function clickedOutsideModal(){
         </div>
         <CuraFileSearch class="my-storage-search" @searchItemClicked="searchItemClicked" />
 
-        <h1>Мое хранилище</h1>
+        <h1 class="my-storage-title">Мое хранилище</h1>
         <div class="my-storage-grid-header">
             <div class="my-storage-grid-header-item">
                 <span>Имя</span>
@@ -51,12 +56,12 @@ function clickedOutsideModal(){
                 <Icon name="material-symbols:more-vert" class="icon" />
             </div>
         </div>
-        <DragNDropArea class="my-storage-files-container">
+        <DragNDropArea class="my-storage-files-container" @files-dropped="filesDropped">
             <CuraContextMenu class="cura-context-menu">
-                    <div class="cura-context-menu-item">
-                        <Icon name="material-symbols:create-new-folder" />
-                        <span>Создать папку</span>
-                    </div>
+                <div class="cura-context-menu-item">
+                    <Icon name="material-symbols:create-new-folder" />
+                    <span>Создать папку</span>
+                </div>
             </CuraContextMenu>
             <CuraStorageItem isSelected name="test" lastModified="2021-01-01" size="100">
                 <template #icon>

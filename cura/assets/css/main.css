@@ -22,3 +22,14 @@ body {
     z-index: -1;
 }
 
+.page-main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    justify-content: stretch;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}

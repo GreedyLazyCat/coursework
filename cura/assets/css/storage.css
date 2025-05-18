@@ -26,7 +26,7 @@
 }
 
 
-.my-storage-main-container h1 {
+.my-storage-title {
     display: flex;
     align-items: center;
     font-size: 24px;
