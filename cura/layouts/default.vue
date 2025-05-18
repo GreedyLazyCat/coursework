@@ -4,6 +4,8 @@ import '~/assets/css/dark.css'
 import '~/assets/css/light.css'
 
 const prefersDark = ref(false)
+const {data, error} = await useFetch('/api/user/read')
+
 
 onMounted(() => {
     prefersDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -19,7 +21,7 @@ const theme = computed(() => prefersDark.value ? "dark" : "light")
         <div id="modal-teleports"></div>
         <div class="storage-main-container">
             <div>
-                <div class="sidbar-top-items">
+                <div class="sidebar__top-items">
                     <div class="storage-cura-logo">
                         <span>Cura</span>
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,11 +31,11 @@ const theme = computed(() => prefersDark.value ? "dark" : "light")
                         </svg>
                     </div>
                     <hr>
-                    <div class="storage-user-sidebar">
+                    <div class="sidebar__user" @click="navigateTo('/user')">
                         <div class="avatar"></div>
                         <div class="storage-user-info">
-                            <span>Username</span>
-                            <span>example@example.com</span>
+                            <span>{{ data?.username }}</span>
+                            <span>{{ data?.email }}</span>
                         </div>
                     </div>
                     <hr>
@@ -43,7 +45,7 @@ const theme = computed(() => prefersDark.value ? "dark" : "light")
                         <CuraNavItem to="/loadqueue">Очередь загрузки</CuraNavItem>
                     </CuraNav>
                 </div>
-                <div class="storage-sidebar-bottom-items">
+                <div class="sidebar__bottom-items">
                     <div class="loading-files-container">
                         <span>Загрузка файлов: 0/2</span>
                         <CuraProgress />
@@ -79,13 +81,13 @@ const theme = computed(() => prefersDark.value ? "dark" : "light")
     flex-direction: column;
 }
 
-.sidbar-top-items {
+.sidebar__top-items {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.storage-sidebar-bottom-items {
+.sidebar__bottom-items {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -123,10 +125,11 @@ const theme = computed(() => prefersDark.value ? "dark" : "light")
     border-radius: 50%;
 }
 
-.storage-user-sidebar {
+.sidebar__user {
     display: flex;
     gap: 8px;
     align-items: center;
+    cursor: pointer;
 }
 
 .storage-user-info {
@@ -176,6 +179,4 @@ const theme = computed(() => prefersDark.value ? "dark" : "light")
     color: var(--md-sys-color-on-secondary-container);
     border: 1px solid var(--md-sys-color-outline-variant);
 }
-
-
 </style>

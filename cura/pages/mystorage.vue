@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import '~/assets/css/storage.css'
+
+
 function filesDropped(files: FileList) {
     console.log(files)
 }

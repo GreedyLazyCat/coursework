@@ -48,7 +48,7 @@
     transform: translate(-50%, -50%);
 }
 
-.login-card form {
+.login-card__form {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -67,7 +67,7 @@
 }
 
 
-.login-title span {
+.login-card__title span {
     font-size: 2.8rem;
     color: var(--md-sys-color-primary);
     margin-right: 24px;
@@ -75,7 +75,7 @@
 
 
 
-.login-btn {
+.login-card__button{
     border: 1px solid var(--md-sys-color-outline);
     padding: 8px 12px;
     background-color: var(--md-sys-color-primary);
@@ -83,13 +83,14 @@
     font-size: var(--input-font-size);
     border-radius: var(--input-border-radius);
     height: 48px;
+    margin-bottom: 8px;
 }
 
-.login-btn:hover {
+.login-card__button:hover {
     cursor: pointer;
 }
 
-.login-title {
+.login-card__title {
     display: flex;
     /* flex-direction: column; */
     align-items: center;
@@ -98,10 +99,24 @@
     font-size: medium;
 }
 
-.login-form__error {
+.login-card__error {
     height: 28px;
     width: 100%;
     color: var(--md-sys-color-error);
     display: flex;
     align-items: center;
+}
+
+.login-card__links{
+    display: flex;
+    justify-content: space-between;
+}
+.login-card__link{
+    color: var(--md-sys-color-primary);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.login-card__link:visited{
+    color: var(--md-sys-color-secondary);
 }

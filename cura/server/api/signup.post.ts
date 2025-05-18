@@ -12,10 +12,10 @@ export default defineEventHandler(async (event) => {
     const userExists = await db.select().from(tables.user).where(eq(tables.user.username, username))
     if (userExists.length > 0) {
         const errorObj = {
-            username: 'Пользователь с таким username уже существует'
+            username: 'Пользователь с таким именем пользователя уже существует'
         }
         throw createError({
-            statusCode: 400, statusMessage: 'Пользователь с таким username уже существует', message: JSON.stringify(errorObj)
+            statusCode: 400, statusMessage: 'Пользователь с таким именем пользователя уже существует', message: JSON.stringify(errorObj)
         })
     }
     const emailExists = await db.select().from(tables.user).where(eq(tables.user.email, email))
