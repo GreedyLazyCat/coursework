@@ -40,6 +40,7 @@ export const uploadChunk = pgTable("UploadChunk", {
 	chunkNumber: integer().notNull(),
 	chunkSize: integer().notNull(),
 	createdAt: timestamp({ precision: 3, mode: 'string' }).defaultNow().notNull(),
+	hash: varchar("hash", {length: 300}).notNull()
 });
 
 export const role = pgTable("Role", {
@@ -57,6 +58,6 @@ export const storageItem = pgTable("StorageItem", {
 	updatedAt: timestamp({ precision: 3, mode: 'string' }),
 	type: storageItemType().notNull(),
 	storagePath: text(),
-	hash: text().notNull(),
+	hash: text(),
 	uploadStatus: storageItemUploadStatus().notNull(),
 });

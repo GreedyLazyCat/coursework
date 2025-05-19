@@ -4,7 +4,6 @@ const bodySchema = z.object({
     name: z.string(),
     mimeType: z.string(),
     size: z.number(),
-    hash: z.string(),
     type: storageItemType
 })
 
@@ -17,7 +16,6 @@ export default defineEventHandler(async (event) => {
         name: body.name,
         mimeType: body.mimeType,
         size: body.size,
-        hash: body.hash,
         type: body.type,
         uploadStatus: "INITIALIZED"
     })

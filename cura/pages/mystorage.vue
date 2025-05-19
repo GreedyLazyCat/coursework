@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import '~/assets/css/storage.css'
-import ChecksumService from '~/lib/hasihgService'
-
-const hashService = new ChecksumService 
+import ChecksumService from '~/lib/hashingService'
+const hashingService = new ChecksumService() 
 
 async function filesDropped(files: FileList) {
     for (const file of files) {
         console.log(file.size)
-        console.log(await hashService.sha256(file))
+        console.log( hashingService.hashSlice(await file.slice(0, 10).arrayBuffer()))
     }
 }
 

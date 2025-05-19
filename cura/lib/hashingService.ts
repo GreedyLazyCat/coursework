@@ -2,7 +2,10 @@ import CryptoJS from 'crypto-js'
 
 export default class ChecksumService {
 
-    
+    hashSlice(slice: ArrayBuffer){
+        const wordArray = CryptoJS.lib.WordArray.create(slice);
+        return CryptoJS.SHA256(wordArray).toString();
+    } 
 
     async sha256(file: File): Promise<string> {
         let sha256 = CryptoJS.algo.SHA256.create();
