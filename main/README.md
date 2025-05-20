@@ -9,4 +9,8 @@ DB_PORT=
 DB_HOST=db
 # Пароль для шифрования куки сессии длинной 32 символа
 NUXT_SESSION_PASSWORD=
+# Информация о redis, для dev нужно полжить это в file-assembler/.env 
+REDIS_PASSWORD=
+REDIS_USER=
+REDIS_USER_PASSWORD=
 ```

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.11.0",
+    "bullmq": "^5.52.3",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.43.1",
