@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import {Redis} from 'ioredis'
-import WriteFileService from '~/lib/writeFileService'
 import { Queue } from 'bullmq'
+import { writeFileChunk } from '~/lib/fileUtils'
 
 const bodySchema = z.object({
     storageItemId: z.string(),
@@ -18,10 +18,6 @@ const redisConnection = new Redis({
 export default defineEventHandler(async (event) => {
     const body = await readFormData(event)
     const bodyObject = Object.fromEntries(body)
-    const fileService = new WriteFileService()
-    const fileId = 'asdfasdfasdf'
-    const queue = new Queue("files")
-    queue.add('test', {lol: "test", file: await (bodyObject.blob as File).arrayBuffer()})
-    // fileService.startFileWriting(fileId) 
-    // fileService.writeFilePart(fileId, bodyObject.blob as File)
+    const fileId = 'asdfasdf'
+    await writeFileChunk(fileId, (bodyObject.blob as File), 1) 
 })

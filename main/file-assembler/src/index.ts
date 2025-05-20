@@ -1,6 +1,8 @@
 import { Queue, Worker, Job } from 'bullmq';
 import { config } from 'dotenv';
+import { existsSync } from 'fs';
 import { Redis } from 'ioredis';
+import { join, resolve } from 'path';
 config()
 
 const connection = new Redis({
@@ -9,6 +11,10 @@ const connection = new Redis({
     maxRetriesPerRequest: null
 })
 
-const worker = new Worker("files", async (job: Job) => {
-    console.log(job.data)
+const worker = new Worker("assembly", async (job: Job) => {
+    
 }, {connection})
+
+worker.on("failed", (job, reason)=>{
+    console.log(reason)
+})
