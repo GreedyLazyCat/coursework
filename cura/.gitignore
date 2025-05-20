@@ -6,6 +6,7 @@
 .cache
 .continue
 dist
+uploads
 
 postgres_data
 prisma/generated

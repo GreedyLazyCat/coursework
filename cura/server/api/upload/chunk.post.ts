@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import WriteFileService from '~/lib/writeFileService'
 
 const bodySchema = z.object({
     storageItemId: z.string(),
@@ -10,6 +11,9 @@ const bodySchema = z.object({
 
 export default defineEventHandler(async (event) => {
     const body = await readFormData(event)
-    bodySchema.parse(Object.fromEntries(body))
-    console.log() 
+    const bodyObject = Object.fromEntries(body)
+    const fileService = new WriteFileService()
+    const fileId = 'asdfasdfasdf'
+    fileService.startFileWriting(fileId) 
+    fileService.writeFilePart(fileId, bodyObject.blob as File)
 })

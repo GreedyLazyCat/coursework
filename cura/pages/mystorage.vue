@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import '~/assets/css/storage.css'
 import ChecksumService from '~/lib/hashingService'
-const hashingService = new ChecksumService() 
+const hashingService = new ChecksumService()
 
 async function filesDropped(files: FileList) {
+    const formData = new FormData()
+
     for (const file of files) {
-        console.log(file.size)
-        console.log( hashingService.hashSlice(await file.slice(0, 10).arrayBuffer()))
+        console.log(file)
+        formData.append("blob", file.slice(0, 10))
+        $fetch('/api/upload/chunk', {
+            method: 'POST',
+            body: formData
+        })
     }
 }
 

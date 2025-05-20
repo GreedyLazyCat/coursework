@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js'
 
-export default class ChecksumService {
+export default class HashingService{
 
     hashSlice(slice: ArrayBuffer){
         const wordArray = CryptoJS.lib.WordArray.create(slice);
