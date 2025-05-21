@@ -129,12 +129,16 @@ export default defineEventHandler(async (event) => {
             return {
                 lastChunkNumber: (maxNumber.length === 0) ? 0 : maxNumber[0].value
             }
-            break;
         case "REPLACE":
             const storageItem = await validateStorageItem()
             await db.update(tables.storageItem).set({
                 uploadStatus: "INITIALIZED"
             }).where(eq(tables.storageItem.id, storageItem.id))
+            /*
+            Здесь можно ввести состояние REPLACING и когда клиент завершит загрузку
+            на другом маршруте удалить старый файл.
+            При этом перед началом замены переименовать старый файл в id_old
+            */
             //Подумать стоит ли удаление тоже в воркер перенести
             removeFile(storageItem.storagePath as string)
             break;
