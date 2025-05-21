@@ -20,11 +20,14 @@ export function resolveTempFolder(fileId: string): string{
 
     return tempPath 
 }
-export async function writeFileChunk(fileId: string, chunk: File, chunckNumber: number) {
+export async function writeFileChunk(fileId: string, chunk: Blob, hash: string, chunckNumber: number) {
     const tempPath = resolveTempFolder(fileId)
-    const hasher = new HashingService()
-    const hash = hasher.hashSlice(await chunk.arrayBuffer())
     const filePath = join(tempPath, `${chunckNumber}_${hash}`)
     fs.writeFileSync(filePath, await chunk.bytes())
+}
 
+export function removeFile(fileName: string){
+    const dirPath = resolve(useRuntimeConfig().filesFolderPath)
+    const filePath = join(dirPath, fileName)
+    fs.rmSync(filePath)
 }

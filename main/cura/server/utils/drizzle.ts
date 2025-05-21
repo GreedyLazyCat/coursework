@@ -1,7 +1,6 @@
 import 'dotenv/config'
 import { drizzle } from 'drizzle-orm/node-postgres'
-import { useLogger } from 'nuxt/kit'
-export { sql, eq, and, or } from 'drizzle-orm'
+export { sql, eq, and, or, max as maxDrizzle } from 'drizzle-orm'
 
 import * as schema from '~/server/db/schema'
 
