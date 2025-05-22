@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "db:pull": "drizzle-kit pull"
   },
   "keywords": [],
   "author": "",
