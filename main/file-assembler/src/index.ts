@@ -12,7 +12,7 @@ const connection = new Redis({
 })
 
 const worker = new Worker("assembly", async (job: Job) => {
-    
+    console.log(job.data)
 }, {connection})
 
 worker.on("failed", (job, reason)=>{

@@ -1,7 +1,7 @@
 import { pgTable, serial, text, integer, uniqueIndex, varchar, timestamp, pgEnum, uuid, type AnyPgColumn, primaryKey } from "drizzle-orm/pg-core"
 
 export const storageItemType = pgEnum("StorageItemType", ['FILE', 'FOLDER'])
-export const storageItemUploadStatus = pgEnum("StorageItemUploadStatus", ['FINISHED', 'LOADING', 'INITIALIZED'])
+export const storageItemUploadStatus = pgEnum("StorageItemUploadStatus", ['FINISHED', 'LOADING', 'INITIALIZED', 'ASSEMBLING'])
 
 export const rolePermission = pgTable("RolePermission", {
 	roleId: serial("roleId").references((): AnyPgColumn => role.id).notNull(),

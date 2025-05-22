@@ -28,6 +28,7 @@ const bodySchema = z.object({
 })
 
 export default defineEventHandler(async (event) => {
+    await requireUserSession(event)
     const formData = await readFormData(event)
     const db = useDrizzle()
     const toValidate = {
