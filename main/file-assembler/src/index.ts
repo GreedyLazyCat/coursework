@@ -17,11 +17,16 @@ const connectionstring = `postgresql://${process.env.db_user}:${process.env.db_p
 console.log(`connecting to database at ${connectionstring}`)
 const db = drizzle(connectionstring, { schema })
 
-const worker = new Worker("assembly", async (job: Job) => {
+const fileAssembler = new Worker("assembly", async (job: Job) => {
     /* -- Отсортировать пришедшие чанки по номеру -- */
-    const dbChunks = await db.select()
+    let dbChunks = await db.select()
         .from(schema.uploadChunk)
         .where(eq(schema.uploadChunk.storageItemId, job.data.storageItemId as string))
+
+    if (dbChunks.length === 0) {
+        throw new Error("No chunks available")
+    }
+    dbChunks = dbChunks.sort((a, b) => a.chunkNumber - b.chunkNumber)
 
     assebmleFile(job.data.storageItemId, dbChunks)
 
@@ -29,9 +34,15 @@ const worker = new Worker("assembly", async (job: Job) => {
         uploadStatus: "FINISHED"
     }).where(eq(schema.storageItem.id, job.data.storageItemId))
 
-    /* -- Удалить чанки из бд -- */
+    await db.delete(schema.uploadChunk)
+        .where(eq(schema.uploadChunk.storageItemId, job.data.storageItemId))
+
 }, { connection })
 
-worker.on("failed", (job, reason) => {
-    console.log(reason)
+fileAssembler.on("error", (reason) => {
+    console.log(`Worker failed.\nReason: ${reason}`)
+})
+
+fileAssembler.on("failed", (job, reason) => {
+    console.log(`Worker failed on job ${job}\nReason: ${reason}`)
 })
