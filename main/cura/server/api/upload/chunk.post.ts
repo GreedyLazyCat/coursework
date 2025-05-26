@@ -1,9 +1,5 @@
 import { z } from 'zod'
-import * as fs from 'fs'
-import { Redis } from 'ioredis'
-import { Queue } from 'bullmq'
 import { writeFileChunk } from '~/lib/fileUtils'
-import { trace } from 'console'
 
 function numberValidator(val: string, ctx: z.RefinementCtx) {
     try {
@@ -22,7 +18,6 @@ function numberValidator(val: string, ctx: z.RefinementCtx) {
 const bodySchema = z.object({
     storageItemId: z.string(),
     chunkNumber: z.string().transform(numberValidator),
-    chunkSize: z.string().transform(numberValidator),
     hash: z.string(),
     chunk: z.any().refine((file) => file instanceof Blob, 'Файл обязателен')
 })
@@ -60,7 +55,7 @@ export default defineEventHandler(async (event) => {
         await db.insert(tables.uploadChunk).values({
             storageItemId: validated.data.storageItemId,
             chunkNumber: validated.data.chunkNumber,
-            chunkSize: validated.data.chunkSize,
+            chunkSize: validated.data.chunk.size,
             hash: validated.data.hash
         })
         await writeFileChunk(validated.data.storageItemId,

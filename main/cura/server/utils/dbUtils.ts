@@ -44,3 +44,17 @@ export async function storageItemExistsInFolder(
         return undefined
     }
 }
+
+export async function hasPermissionForStorageItem(userId: string, permission: string, storageItemId: string) {
+    const db = useDrizzle()
+    const result = await db.select().from(tables.storageItemUserRole)
+        .leftJoin(tables.role, eq(tables.role.id, tables.storageItemUserRole.roleId))
+        .leftJoin(tables.rolePermission, eq(tables.role.id, tables.rolePermission.roleId))
+        .leftJoin(tables.permission, eq(tables.rolePermission.permissionId, tables.permission.id))
+        .where(and(
+            eq(tables.storageItemUserRole.storageItemId, storageItemId),
+            eq(tables.storageItemUserRole.userId, userId),
+        ))
+    const found = result.find((value) => value.Permission?.name === permission)
+    return found !== undefined
+}

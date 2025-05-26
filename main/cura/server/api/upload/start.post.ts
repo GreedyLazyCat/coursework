@@ -15,6 +15,8 @@ const bodySchema = z.object({
 
 export default defineEventHandler(async (event) => {
     await requireUserSession(event)
+    const session = await getUserSession(event)
+    
     const body = await readValidatedBody(event, bodySchema.parse)
 
     /* Сначала базовый функционал, потом обработка edge case'ов */
