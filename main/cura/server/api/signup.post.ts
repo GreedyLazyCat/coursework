@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { createUserStorage } from '../utils/dbUtils'
 
 const bodySchema = z.object({
     username: z.string(),
@@ -28,7 +29,16 @@ export default defineEventHandler(async (event) => {
         })
     }
     const hashedPassword = await hashPassword(password)
-    await db.insert(tables.user).values({ username, password: hashedPassword, email })
+    const createdUsers = await db.insert(tables.user)
+        .values({ username, password: hashedPassword, email })
+        .returning({
+            id: tables.user.id,
+            username: tables.user.username
+        })
+    if(createdUsers.length !== 0){
+        const user = createdUsers[0]
+        await createUserStorage(user.id, user.username)
+    }
     setResponseStatus(event, 201)
     return { message: 'User created' }
 })

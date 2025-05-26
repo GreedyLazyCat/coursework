@@ -1,6 +1,7 @@
 import { isNull } from "drizzle-orm";
 import { NodePgClient } from "drizzle-orm/node-postgres";
 import { NodePgDatabase } from "drizzle-orm/node-postgres/driver";
+import { role } from "../db/schema";
 
 export async function storageItemById(db: NodePgDatabase<typeof import("../db/schema")> & {
     $client: NodePgClient;
@@ -33,7 +34,6 @@ export async function storageItemExistsInFolder(
                 (parentId) ? eq(tables.storageItem.parentId, parentId) : isNull(tables.storageItem.parentId),
                 eq(tables.storageItem.type, "FILE")
             ))
-        console.log(parentId)
         if (storageItems.length !== 0) {
             return storageItems[0]
         }
@@ -55,6 +55,67 @@ export async function hasPermissionForStorageItem(userId: string, permission: st
             eq(tables.storageItemUserRole.storageItemId, storageItemId),
             eq(tables.storageItemUserRole.userId, userId),
         ))
-    const found = result.find((value) => value.Permission?.name === permission)
-    return found !== undefined
+    if (result.length !== 0) {
+        const found = result.find((value) => value.Permission?.name === permission)
+        return found !== undefined
+    }
+    else {
+        const recursive = await db.execute(
+            sql`
+                WITH RECURSIVE dir_path AS (
+                    SELECT id, name, parentId
+                    FROM StorageItem 
+                    WHERE parentId = ${storageItemId}
+                    
+                    UNION ALL
+                    
+                    SELECT c.id, c.name, c.parentId
+                    FROM StorageItem c
+                    INNER JOIN dir_path cp ON cp.parentId = c.id
+                )
+                SELECT * FROM dir_path; 
+            `)
+        console.log(recursive)
+    }
+}
+
+export async function createUserStorage(userId: string, username: string) {
+    const db = useDrizzle()
+    const inserts = await db.insert(tables.storageItem).values({
+        name: `${username}_storage`,
+        mimeType: "none",
+        size: 0,
+        type: "FOLDER",
+        uploadStatus: "FINISHED",
+    }).returning({
+        id: tables.storageItem.id
+    })
+
+    const roles = await db.select({ id: tables.role.id })
+        .from(tables.role)
+        .where(eq(tables.role.name, "owner"))
+
+    await db.insert(tables.storageItemUserRole).values({
+        storageItemId: inserts[0].id,
+        userId: userId,
+        roleId: roles[0].id
+    })
+}
+
+export async function getUserOwnedItem(userId: string, ownerRoleName: string) {
+    const db = useDrizzle()
+
+    const query = await db.select().from(tables.storageItemUserRole)
+        .leftJoin(tables.role, eq(tables.role.id, tables.storageItemUserRole.roleId))
+        .where(eq(tables.storageItemUserRole.userId, userId))
+    if (query.length === 0) {
+        throw new Error("Error getting user owned item")
+    }
+    const result = query.find((item) => item.Role?.name === ownerRoleName)
+    if (!result) {
+        throw new Error("Error getting user owned item")
+    }
+
+
+    return result.StorageItemUserRole.storageItemId
 }

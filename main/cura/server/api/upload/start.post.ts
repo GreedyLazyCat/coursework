@@ -14,11 +14,15 @@ const bodySchema = z.object({
 
 
 export default defineEventHandler(async (event) => {
-    await requireUserSession(event)
-    const session = await getUserSession(event)
-    
+    const session = await requireUserSession(event)
     const body = await readValidatedBody(event, bodySchema.parse)
-
+    const hasPermission = await hasPermissionForStorageItem(session.user?.id as string, "storageItem.write", body.parentId ?? session.user?.rootItemId)
+    if (!hasPermission) {
+        throw createError({
+            statusCode: 401,
+            message: "debug"
+        })
+    }
     /* Сначала базовый функционал, потом обработка edge case'ов */
     const db = useDrizzle()
 
@@ -50,7 +54,8 @@ export default defineEventHandler(async (event) => {
     }
     switch (body.uploadType) {
         case "START":
-            const storageItemChecked = await storageItemExistsInFolder(db, body.name, body.mimeType, body.parentId)
+            const parentId = body.parentId ?? session.user?.rootItemId
+            const storageItemChecked = await storageItemExistsInFolder(db, body.name, body.mimeType, parentId)
             if (storageItemChecked) {
                 throw createError({
                     statusCode: 403,
@@ -64,7 +69,7 @@ export default defineEventHandler(async (event) => {
                 size: body.size,
                 type: "FILE",
                 uploadStatus: "INITIALIZED",
-                parentId: body.parentId
+                parentId: parentId
             }).returning({
                 id: tables.storageItem.id
             })

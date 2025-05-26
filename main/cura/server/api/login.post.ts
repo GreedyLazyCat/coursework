@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { getUserOwnedItem } from '../utils/dbUtils'
 
 const bodySchema = z.object({
     username: z.string(),
@@ -16,15 +17,17 @@ export default defineEventHandler(async (event) => {
 
         throw createError({ statusCode: 400, statusMessage: 'Bad Credentials', message: JSON.stringify(errorObj) })
     }
+
     const user = fetchedUser[0]
+    const rootItemId = await getUserOwnedItem(user.id, "owner")
     if (await verifyPassword(user.password, password)) {
         console.log('Verified password')
         await setUserSession(event, {
             user: {
-                id: user.id
+                id: user.id,
+                rootItemId: rootItemId
             }
         })
-        console.log('set user session')
         return { message: 'Logged in' }
     }
     throw createError({ statusCode: 400, statusMessage: 'Bad Credentials', message: JSON.stringify(errorObj) })

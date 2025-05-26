@@ -10,8 +10,15 @@ const redisConnection = new Redis()
 const assebmlyQueue = new Queue("assembly", { connection: redisConnection })
 
 export default defineEventHandler(async (event) => {
-    await requireUserSession(event)
+    const session = await requireUserSession(event)
     const body = await readValidatedBody(event, bodySchema.parse)
+
+    const hasPermission = await hasPermissionForStorageItem(session.user?.id as string, "storageItem.write", body.storageItemId)
+    if (!hasPermission) {
+        throw createError({
+            statusCode: 401
+        })
+    }
     const db = useDrizzle()
     const storageItem = await storageItemById(db, body.storageItemId)
     if (!storageItem) {

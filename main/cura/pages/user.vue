@@ -8,7 +8,7 @@ async function logout() {
 
 <template>
     <div class="page-main-container">
-        <button class="cura-btn">
+        <button class="cura-btn" @click="logout">
             Выйти
         </button>
     </div>
