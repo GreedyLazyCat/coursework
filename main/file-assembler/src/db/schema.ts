@@ -1,64 +1,64 @@
 import { pgTable, serial, varchar, foreignKey, uuid, integer, timestamp, text, uniqueIndex, primaryKey, pgEnum } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
-export const storageItemType = pgEnum("StorageItemType", ['FILE', 'FOLDER'])
-export const storageItemUploadStatus = pgEnum("StorageItemUploadStatus", ['FINISHED', 'LOADING', 'INITIALIZED', 'ASSEMBLING'])
+export const storageItemType = pgEnum("storage_item_type", ['FILE', 'FOLDER'])
+export const storageItemUploadStatus = pgEnum("storage_item_upload_status", ['FINISHED', 'LOADING', 'INITIALIZED', 'ASSEMBLING'])
 
 
-export const role = pgTable("Role", {
+export const role = pgTable("role", {
 	id: serial().primaryKey().notNull(),
 	name: varchar({ length: 255 }).notNull(),
 });
 
-export const permission = pgTable("Permission", {
+export const permission = pgTable("permission", {
 	id: serial().primaryKey().notNull(),
 	name: varchar({ length: 255 }).notNull(),
 });
 
-export const storageItem = pgTable("StorageItem", {
+export const storageItem = pgTable("storage_item", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
-	parentId: uuid(),
+	parentId: uuid("parent_id"),
 	name: varchar({ length: 255 }).notNull(),
-	mimeType: varchar({ length: 255 }).notNull(),
+	mimeType: varchar("mime_type", { length: 255 }).notNull(),
 	size: integer().notNull(),
-	createdAt: timestamp({ precision: 3, mode: 'string' }).defaultNow().notNull(),
-	updatedAt: timestamp({ precision: 3, mode: 'string' }),
+	createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
+	updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }),
 	type: storageItemType().notNull(),
-	storagePath: text(),
+	storagePath: text("storage_path"),
 	hash: text(),
-	uploadStatus: storageItemUploadStatus().notNull(),
+	uploadStatus: storageItemUploadStatus("upload_status").notNull(),
 }, (table) => [
 	foreignKey({
 			columns: [table.parentId],
 			foreignColumns: [table.id],
-			name: "StorageItem_parentId_StorageItem_id_fk"
+			name: "storage_item_parent_id_storage_item_id_fk"
 		}),
 ]);
 
-export const storageItemUserRole = pgTable("StorageItemUserRole", {
+export const storageItemUserRole = pgTable("storage_item_user_role", {
 	id: serial().primaryKey().notNull(),
-	storageItemId: uuid().notNull(),
-	userId: uuid().notNull(),
-	roleId: serial().notNull(),
+	storageItemId: uuid("storage_item_id").notNull(),
+	userId: uuid("user_id").notNull(),
+	roleId: serial("role_id").notNull(),
 }, (table) => [
 	foreignKey({
 			columns: [table.storageItemId],
 			foreignColumns: [storageItem.id],
-			name: "StorageItemUserRole_storageItemId_StorageItem_id_fk"
+			name: "storage_item_user_role_storage_item_id_storage_item_id_fk"
 		}),
 	foreignKey({
 			columns: [table.userId],
 			foreignColumns: [user.id],
-			name: "StorageItemUserRole_userId_User_id_fk"
+			name: "storage_item_user_role_user_id_user_id_fk"
 		}),
 	foreignKey({
 			columns: [table.roleId],
 			foreignColumns: [role.id],
-			name: "StorageItemUserRole_roleId_Role_id_fk"
+			name: "storage_item_user_role_role_id_role_id_fk"
 		}),
 ]);
 
-export const user = pgTable("User", {
+export const user = pgTable("user", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	username: varchar({ length: 255 }).notNull(),
 	password: text().notNull(),
@@ -68,34 +68,34 @@ export const user = pgTable("User", {
 	uniqueIndex("user_username_key").using("btree", table.username.asc().nullsLast().op("text_ops")),
 ]);
 
-export const uploadChunk = pgTable("UploadChunk", {
+export const uploadChunk = pgTable("upload_chunk", {
 	id: serial().primaryKey().notNull(),
-	storageItemId: uuid().notNull(),
-	chunkNumber: integer().notNull(),
-	chunkSize: integer().notNull(),
-	createdAt: timestamp({ precision: 3, mode: 'string' }).defaultNow().notNull(),
+	storageItemId: uuid("storage_item_id").notNull(),
+	chunkNumber: integer("chunk_number").notNull(),
+	chunkSize: integer("chunk_size").notNull(),
+	createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
 	hash: varchar({ length: 300 }).notNull(),
 }, (table) => [
 	foreignKey({
 			columns: [table.storageItemId],
 			foreignColumns: [storageItem.id],
-			name: "UploadChunk_storageItemId_StorageItem_id_fk"
+			name: "upload_chunk_storage_item_id_storage_item_id_fk"
 		}),
 ]);
 
-export const rolePermission = pgTable("RolePermission", {
-	roleId: serial().notNull(),
-	permissionId: serial().notNull(),
+export const rolePermission = pgTable("role_permission", {
+	roleId: serial("role_id").notNull(),
+	permissionId: serial("permission_id").notNull(),
 }, (table) => [
 	foreignKey({
 			columns: [table.roleId],
 			foreignColumns: [role.id],
-			name: "RolePermission_roleId_Role_id_fk"
+			name: "role_permission_role_id_role_id_fk"
 		}),
 	foreignKey({
 			columns: [table.permissionId],
 			foreignColumns: [permission.id],
-			name: "RolePermission_permissionId_Permission_id_fk"
+			name: "role_permission_permission_id_permission_id_fk"
 		}),
-	primaryKey({ columns: [table.roleId, table.permissionId], name: "RolePermission_roleId_permissionId_pk"}),
+	primaryKey({ columns: [table.roleId, table.permissionId], name: "role_permission_role_id_permission_id_pk"}),
 ]);

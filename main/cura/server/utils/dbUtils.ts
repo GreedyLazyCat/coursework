@@ -56,26 +56,40 @@ export async function hasPermissionForStorageItem(userId: string, permission: st
             eq(tables.storageItemUserRole.userId, userId),
         ))
     if (result.length !== 0) {
-        const found = result.find((value) => value.Permission?.name === permission)
+        const found = result.find((value) => value.permission?.name === permission)
         return found !== undefined
     }
     else {
         const recursive = await db.execute(
             sql`
-                WITH RECURSIVE dir_path AS (
-                    SELECT id, name, parentId
-                    FROM StorageItem 
-                    WHERE parentId = ${storageItemId}
-                    
-                    UNION ALL
-                    
-                    SELECT c.id, c.name, c.parentId
-                    FROM StorageItem c
-                    INNER JOIN dir_path cp ON cp.parentId = c.id
-                )
-                SELECT * FROM dir_path; 
+              WITH RECURSIVE
+  dir_path AS (
+    SELECT
+      item.id,
+      item.parent_id
+    FROM
+      storage_item item
+    WHERE
+      item.id = ${storageItemId}
+    UNION ALL
+    SELECT
+      s.id,
+      s.parent_id
+    FROM
+      storage_item s
+      JOIN dir_path ON s.id = dir_path.parent_id
+  )
+SELECT
+  ROW_NUMBER() OVER () AS row_number,
+  *
+FROM
+  dir_path
+  JOIN storage_item_user_role si ON dir_path.id = si.storage_item_id
+  JOIN "role" r ON si.role_id = r.id
+  JOIN role_permission rp ON rp.role_id = r.id
+  JOIN "permission" p ON p.id = rp.permission_id 
             `)
-        console.log(recursive)
+        console.log(recursive.rows)
     }
 }
 
@@ -111,11 +125,11 @@ export async function getUserOwnedItem(userId: string, ownerRoleName: string) {
     if (query.length === 0) {
         throw new Error("Error getting user owned item")
     }
-    const result = query.find((item) => item.Role?.name === ownerRoleName)
+    const result = query.find((item) => item.role?.name === ownerRoleName)
     if (!result) {
         throw new Error("Error getting user owned item")
     }
 
 
-    return result.StorageItemUserRole.storageItemId
+    return result.storage_item_user_role.storageItemId
 }
