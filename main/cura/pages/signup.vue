@@ -224,6 +224,7 @@ watch(email, () => {
 }
 
 .signup-card::after {
+    display: none;
     position: absolute;
     height: 100%;
     width: 100%;
