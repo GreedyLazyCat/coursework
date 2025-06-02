@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="10020C0A-DA28-698C-3219-6D486DE21FD6" name="UploadChunk">
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="10020C0A-DA28-698C-3219-6D486DE21FD6" name="upload_chunk">
 <createdBy>htmlw</createdBy>
 <createdTime>2025-04-30 07:58:39 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
@@ -19,23 +19,21 @@
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="chunkNumber" id="6D24A2CC-9224-5578-E753-B1EBE284273C">
+<Attribute name="chunk_number" id="6D24A2CC-9224-5578-E753-B1EBE284273C">
 <createdBy>htmlw</createdBy>
 <createdTime>2025-04-30 07:58:52 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="chunkSize" id="11FD8997-30D1-5A52-1E63-961BED6C318C">
+<Attribute name="chunk_size" id="11FD8997-30D1-5A52-1E63-961BED6C318C">
 <createdBy>htmlw</createdBy>
 <createdTime>2025-04-30 07:59:00 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="storageItemId" id="0ADB6A33-150C-C9CA-452A-F921CA95E02A">
+<Attribute name="storage_item_id" id="0ADB6A33-150C-C9CA-452A-F921CA95E02A">
 <createdBy>htmlw</createdBy>
 <createdTime>2025-04-30 07:59:20 UTC</createdTime>
 <generatorID>0C426A67-F7F0-A515-3BCF-B2559B2F7095</generatorID>

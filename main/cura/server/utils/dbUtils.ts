@@ -3,6 +3,12 @@ import { NodePgClient } from "drizzle-orm/node-postgres";
 import { NodePgDatabase } from "drizzle-orm/node-postgres/driver";
 import { role } from "../db/schema";
 
+type RawQueryItem = {
+    id: string,
+    parent_id: string
+}
+const db = useDrizzle()
+
 export async function storageItemById(db: NodePgDatabase<typeof import("../db/schema")> & {
     $client: NodePgClient;
 }, id: string): Promise<typeof tables.storageItem.$inferSelect | undefined> {
@@ -46,55 +52,37 @@ export async function storageItemExistsInFolder(
 }
 
 export async function hasPermissionForStorageItem(userId: string, permission: string, storageItemId: string) {
-    const db = useDrizzle()
-    const result = await db.select().from(tables.storageItemUserRole)
-        .leftJoin(tables.role, eq(tables.role.id, tables.storageItemUserRole.roleId))
-        .leftJoin(tables.rolePermission, eq(tables.role.id, tables.rolePermission.roleId))
-        .leftJoin(tables.permission, eq(tables.rolePermission.permissionId, tables.permission.id))
-        .where(and(
-            eq(tables.storageItemUserRole.storageItemId, storageItemId),
-            eq(tables.storageItemUserRole.userId, userId),
-        ))
-    if (result.length !== 0) {
-        const found = result.find((value) => value.permission?.name === permission)
-        return found !== undefined
+    const rows = await getStorageItemParents(storageItemId)
+    for (const row of rows) {
+        const result = await db.select().from(tables.storageItemUserRole)
+            .leftJoin(tables.role, eq(tables.role.id, tables.storageItemUserRole.roleId))
+            .leftJoin(tables.rolePermission, eq(tables.role.id, tables.rolePermission.roleId))
+            .leftJoin(tables.permission, eq(tables.rolePermission.permissionId, tables.permission.id))
+            .where(and(
+                eq(tables.storageItemUserRole.storageItemId, row.id),
+                eq(tables.storageItemUserRole.userId, userId),
+            ))
+        if (result.length !== 0) {
+            const foundPermission = result.find((e) => (e.permission) ? e.permission.name === permission : false)
+            return (foundPermission) ? true : false
+        }
     }
-    else {
-        const recursive = await db.execute(
-            sql`
-              WITH RECURSIVE
-  dir_path AS (
-    SELECT
-      item.id,
-      item.parent_id
-    FROM
-      storage_item item
-    WHERE
-      item.id = ${storageItemId}
-    UNION ALL
-    SELECT
-      s.id,
-      s.parent_id
-    FROM
-      storage_item s
-      JOIN dir_path ON s.id = dir_path.parent_id
-  )
-SELECT
-  ROW_NUMBER() OVER () AS row_number,
-  *
-FROM
-  dir_path
-  JOIN storage_item_user_role si ON dir_path.id = si.storage_item_id
-  JOIN "role" r ON si.role_id = r.id
-  JOIN role_permission rp ON rp.role_id = r.id
-  JOIN "permission" p ON p.id = rp.permission_id 
-            `)
-        console.log(recursive.rows)
+
+}
+
+export async function deleteStorageItem(storageItemId: string) {
+    const selected = await db.select({ type: tables.storageItem.type })
+        .from(tables.storageItem)
+        .where(eq(tables.storageItem.id, storageItemId))
+    const children = await getStorageItemChildren(storageItemId)
+    for (const child of children.reverse()) {
+        const deletedChild = await db.delete(tables.storageItem)
+            .where(eq(tables.storageItem.id, child.id)).returning()
     }
+
 }
 
 export async function createUserStorage(userId: string, username: string) {
-    const db = useDrizzle()
     const inserts = await db.insert(tables.storageItem).values({
         name: `${username}_storage`,
         mimeType: "none",
@@ -115,9 +103,73 @@ export async function createUserStorage(userId: string, username: string) {
         roleId: roles[0].id
     })
 }
+export async function getStorageItemParents(storageItemId: string) {
+    const recursive = await db.execute<RawQueryItem>(
+        sql`
+              WITH RECURSIVE
+        dir_path AS (
+            SELECT
+            item.id,
+            item.parent_id
+            FROM
+            storage_item item
+            WHERE
+            item.id = ${storageItemId}
+            UNION ALL
+            SELECT
+            s.id,
+            s.parent_id
+            FROM
+            storage_item s
+            JOIN dir_path ON s.id = dir_path.parent_id
+        )
+        SELECT
+        *
+        FROM
+        dir_path
+            `)
+    if (recursive.rowCount === 0) {
+        throw createError({
+            message: `No storage item with id ${storageItemId}`
+        })
+    }
+    return recursive.rows
+}
+
+export async function getStorageItemChildren(storageItemId: string) {
+    const recursive = await db.execute<RawQueryItem>(
+        sql`
+              WITH RECURSIVE
+        dir_path AS (
+            SELECT
+            item.id,
+            item.parent_id
+            FROM
+            storage_item item
+            WHERE
+            item.id = ${storageItemId}
+            UNION ALL
+            SELECT
+            s.id,
+            s.parent_id
+            FROM
+            storage_item s
+            JOIN dir_path ON s.parent_id = dir_path.id
+        )
+        SELECT
+        *
+        FROM
+        dir_path
+            `)
+    if (recursive.rowCount === 0) {
+        throw createError({
+            message: `No storage item with id ${storageItemId}`
+        })
+    }
+    return recursive.rows
+}
 
 export async function getUserOwnedItem(userId: string, ownerRoleName: string) {
-    const db = useDrizzle()
 
     const query = await db.select().from(tables.storageItemUserRole)
         .leftJoin(tables.role, eq(tables.role.id, tables.storageItemUserRole.roleId))

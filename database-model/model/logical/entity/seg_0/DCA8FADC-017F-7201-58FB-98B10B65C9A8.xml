@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="DCA8FADC-017F-7201-58FB-98B10B65C9A8" name="StorageItem">
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="DCA8FADC-017F-7201-58FB-98B10B65C9A8" name="storage_item">
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:06:46 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
@@ -19,7 +19,7 @@
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="parentId" id="08F72804-1C65-6960-6F3E-FDEC694E184E">
+<Attribute name="parent_id" id="08F72804-1C65-6960-6F3E-FDEC694E184E">
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:13:20 UTC</createdTime>
 <generatorID>3ACD47F6-DD41-9DAE-B2DE-BF432810FB11</generatorID>
@@ -33,11 +33,10 @@
 <createdBy>htmlw</createdBy>
 <createdTime>2025-04-26 16:22:05 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="mimeType" id="AA803C35-3FAA-5F6D-B674-7DB980EA226D">
+<Attribute name="mime_type" id="AA803C35-3FAA-5F6D-B674-7DB980EA226D">
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:14:47 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
@@ -53,14 +52,14 @@
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="createdAt" id="5C8A5725-7BBE-F12F-AB4F-06A8DE969FEE">
+<Attribute name="created_at" id="5C8A5725-7BBE-F12F-AB4F-06A8DE969FEE">
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:21:10 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="updatedAt" id="E929BCD0-A550-2A58-8EC0-577D629A51B6">
+<Attribute name="updated_at" id="E929BCD0-A550-2A58-8EC0-577D629A51B6">
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:21:18 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
@@ -72,17 +71,15 @@
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:23:04 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT040</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="storagePath" id="A9370643-5C04-C9B4-6586-E225A97F83B0">
+<Attribute name="storage_path" id="A9370643-5C04-C9B4-6586-E225A97F83B0">
 <createdBy>dima</createdBy>
 <createdTime>2025-04-26 14:29:54 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
@@ -94,7 +91,7 @@
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="uploadStatus" id="F0679352-0183-BA04-47C6-BFA60227BDF7">
+<Attribute name="upload_status" id="F0679352-0183-BA04-47C6-BFA60227BDF7">
 <createdBy>htmlw</createdBy>
 <createdTime>2025-04-30 08:15:17 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>

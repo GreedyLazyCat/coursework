@@ -17,7 +17,7 @@ export const permission = pgTable("permission", {
 
 export const storageItemUserRole = pgTable("storage_item_user_role", {
 	id: serial().primaryKey().notNull(),
-	storageItemId: uuid("storage_item_id").references((): AnyPgColumn => storageItem.id).notNull(),
+	storageItemId: uuid("storage_item_id").references((): AnyPgColumn => storageItem.id, { onDelete: 'cascade' }).notNull(),
 	userId: uuid("user_id").references((): AnyPgColumn => user.id).notNull(),
 	roleId: serial("role_id").references((): AnyPgColumn => role.id).notNull(),
 });
@@ -39,7 +39,7 @@ export const uploadChunk = pgTable("upload_chunk", {
 	storageItemId: uuid("storage_item_id").notNull().references((): AnyPgColumn => storageItem.id),
 	chunkNumber: integer("chunk_number").notNull(),
 	chunkSize: integer("chunk_size").notNull(),
-	createdAt: timestamp("created_at",{ precision: 3, mode: 'string' }).defaultNow().notNull(),
+	createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
 	hash: varchar("hash", { length: 300 }).notNull()
 });
 
@@ -54,8 +54,8 @@ export const storageItem = pgTable("storage_item", {
 	name: varchar("name", { length: 255 }).notNull(),
 	mimeType: varchar("mime_type", { length: 255 }).notNull(),
 	size: integer().notNull(),
-	createdAt: timestamp("created_at",{ precision: 3, mode: 'string' }).defaultNow().notNull(),
-	updatedAt: timestamp("updated_at",{ precision: 3, mode: 'string' }),
+	createdAt: timestamp("created_at", { precision: 3, mode: 'string' }).defaultNow().notNull(),
+	updatedAt: timestamp("updated_at", { precision: 3, mode: 'string' }),
 	type: storageItemType().notNull(),
 	storagePath: text("storage_path"),
 	hash: text(),

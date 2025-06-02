@@ -1,11 +1,8 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="66B84C7C-5B29-A4E6-D7F8-62D1D9DE93A7" name="StorageItemUserRole">
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="66B84C7C-5B29-A4E6-D7F8-62D1D9DE93A7" name="storage_item_user_role">
 <createdBy>htmlw</createdBy>
 <createdTime>2025-04-26 16:17:26 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
 <adequatelyNormalized>NO</adequatelyNormalized>
 <expectedVolumes>0</expectedVolumes>
 <fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
@@ -19,45 +16,34 @@
 <createdBy>htmlw</createdBy>
 <createdTime>2025-04-26 16:20:22 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="roleId" id="9939CC1D-F6B4-2B93-AFA6-18A9880D3DEF">
+<Attribute name="role_id" id="9939CC1D-F6B4-2B93-AFA6-18A9880D3DEF">
 <createdBy>htmlw</createdBy>
 <createdTime>2025-04-26 16:23:38 UTC</createdTime>
 <generatorID>8D3D2693-B31D-6C1F-16C7-D3E6617E14C2</generatorID>
 <ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
 <referedAttribute>A1EF619A-AA36-93BF-F1D3-D31C257FFB55</referedAttribute>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="userId" id="A5D596A7-6267-3A18-49AC-21F8AB44C40D">
+<Attribute name="user_id" id="A5D596A7-6267-3A18-49AC-21F8AB44C40D">
 <createdBy>htmlw</createdBy>
 <createdTime>2025-04-26 16:24:19 UTC</createdTime>
 <generatorID>EDAE4391-0708-BA71-66F7-8160607FD1DE</generatorID>
 <ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
 <referedAttribute>402D6E3E-0370-E1D2-55A2-036B7C109455</referedAttribute>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
+<logicalDatatype>A3A3C77D-0366-9768-FF89-1C25E56881C8</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="storageItemId" id="26FEF8B2-3CA6-D275-B985-A248CC4D7410">
+<Attribute name="storage_item_id" id="26FEF8B2-3CA6-D275-B985-A248CC4D7410">
 <createdBy>htmlw</createdBy>
 <createdTime>2025-04-26 16:24:47 UTC</createdTime>
 <generatorID>6D42DCF0-D44F-4BF0-E37E-6581F595F6D4</generatorID>
 <ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
 <referedAttribute>7B9409E6-9A79-0A8B-637D-69C8CD5FCD55</referedAttribute>
 <use>0</use>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
@@ -68,9 +54,6 @@
 <createdBy>htmlw</createdBy>
 <createdTime>2025-04-26 16:20:25 UTC</createdTime>
 <ownerDesignName>model</ownerDesignName>
-<engineerTo>
-<item key="E67EE7E6-BDDB-B1E6-3B33-FE59E694C176" value="true"/>
-</engineerTo>
 <pk>true</pk>
 <usedAttributes>
 <attributeRef>516B0971-0CDF-462B-4407-37EB383BA568</attributeRef>
