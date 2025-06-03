@@ -52,7 +52,7 @@ export async function storageItemExistsInFolder(
 }
 
 export async function hasPermissionForStorageItem(userId: string, permission: string, storageItemId: string) {
-    const rows = await getStorageItemParents(storageItemId)
+    const rows = await getStorageItemParentsPath(storageItemId)
     for (const row of rows) {
         const result = await db.select().from(tables.storageItemUserRole)
             .leftJoin(tables.role, eq(tables.role.id, tables.storageItemUserRole.roleId))
@@ -74,7 +74,7 @@ export async function deleteStorageItem(storageItemId: string) {
     const selected = await db.select({ type: tables.storageItem.type })
         .from(tables.storageItem)
         .where(eq(tables.storageItem.id, storageItemId))
-    const children = await getStorageItemChildren(storageItemId)
+    const children = await getStorageItemChildrenPath(storageItemId)
     for (const child of children.reverse()) {
         const deletedChild = await db.delete(tables.storageItem)
             .where(eq(tables.storageItem.id, child.id)).returning()
@@ -103,7 +103,7 @@ export async function createUserStorage(userId: string, username: string) {
         roleId: roles[0].id
     })
 }
-export async function getStorageItemParents(storageItemId: string) {
+export async function getStorageItemParentsPath(storageItemId: string) {
     const recursive = await db.execute<RawQueryItem>(
         sql`
               WITH RECURSIVE
@@ -136,7 +136,7 @@ export async function getStorageItemParents(storageItemId: string) {
     return recursive.rows
 }
 
-export async function getStorageItemChildren(storageItemId: string) {
+export async function getStorageItemChildrenPath(storageItemId: string) {
     const recursive = await db.execute<RawQueryItem>(
         sql`
               WITH RECURSIVE
@@ -184,4 +184,9 @@ export async function getUserOwnedItem(userId: string, ownerRoleName: string) {
 
 
     return result.storage_item_user_role.storageItemId
+}
+
+export async function getStorageItemChildren(storageItemId: string) {
+    const result = await db.select().from(tables.storageItem).where(eq(tables.storageItem.parentId, storageItemId))
+    return result
 }

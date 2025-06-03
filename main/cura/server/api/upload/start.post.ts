@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     if (!hasPermission) {
         throw createError({
             statusCode: 401,
-            message: "debug"
+            message: ""
         })
     }
     /* Сначала базовый функционал, потом обработка edge case'ов */

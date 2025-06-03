@@ -1,19 +1,7 @@
 import { z } from 'zod'
 import { writeFileChunk } from '~/lib/fileUtils'
 
-function numberValidator(val: string, ctx: z.RefinementCtx) {
-    try {
-        const parsed = Number.parseInt(String(val));
-        return parsed;
-    } catch (e) {
-        ctx.addIssue({
-            code: "custom",
-            message: "Not a number",
-        });
-        return z.NEVER;
-    }
 
-}
 
 const bodySchema = z.object({
     storageItemId: z.string(),
