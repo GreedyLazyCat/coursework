@@ -47,6 +47,7 @@ async function onSubmit() {
         await navigateTo('/home')
     }
     catch (e) {
+        console.log(e)
         errorMessage.value = 'Неверный логин или пароль'
     }
 }

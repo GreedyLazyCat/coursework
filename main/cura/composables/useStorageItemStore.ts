@@ -13,6 +13,20 @@ export const useStorageItemStore = defineStore("userStorageItems", {
         currentPath: [] as PathItem[],
         rootId: ''
     }),
+    getters: {
+        lastItem(): StorageItem {
+            return this.storageItems[this.storageItems.length - 1]
+        },
+        firstItem(): StorageItem {
+            return this.storageItems[0]
+        },
+        lastPathItem(): PathItem | null {
+            return this.currentPath[this.currentPath.length - 1]
+        },
+        firstPathItem(): PathItem | null {
+            return this.currentPath[0]
+        }
+    },
     actions: {
         async openFolder(parentId: string | null, folderId: string, folderName: string) {
             const folderItems = await fetchFolderItems(folderId)

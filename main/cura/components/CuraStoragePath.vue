@@ -4,6 +4,7 @@ const storageItemStore = useStorageItemStore()
 function isItemLast(item: PathItem) {
     return item === storageItemStore.currentPath[storageItemStore.currentPath.length - 1]
 }
+
 function isItemFirst(item: PathItem) {
     return item === storageItemStore.currentPath[0]
 }

@@ -4,7 +4,7 @@ import ChecksumService from '~/lib/hashingService'
 const hashingService = new ChecksumService()
 const { loggedIn, user } = useUserSession()
 const storageItemStore = useStorageItemStore()
-
+const itemSelection = useItemSelectionStore("mystorage-item-selection")
 
 
 async function filesDropped(files: FileList) {
@@ -12,6 +12,7 @@ async function filesDropped(files: FileList) {
 }
 
 const showModal = ref(false)
+
 function searchItemClicked(item: string) {
     console.log(item)
     showModal.value = true
@@ -36,6 +37,10 @@ function itemDoubleClicked(storageItem: StorageItem) {
     if (storageItem.type === "FOLDER") {
         storageItemStore.openFolder(storageItem.parentId, storageItem.id, storageItem.name)
     }
+}
+
+function itemClicked(item: StorageItem){
+    itemSelection.add(item)
 }
 
 onMounted(() => {
@@ -90,7 +95,7 @@ onMounted(() => {
             </CuraContextMenu>
             <CuraStorageItem v-for="item in storageItemStore.storageItems" :name="getStorageItemRenderName(item)"
                 :key="item.id" :lastModified="item.updatedAt ?? ''" :size="item.size.toString()"
-                @dblclick="itemDoubleClicked(item)">
+                @dblclick="itemDoubleClicked(item)" @click="itemClicked(item)">
                 <template #icon>
                     <Icon :name="`material-symbols:${getItemIcon(item)}`" style="font-size: 20px;"></Icon>
                 </template>

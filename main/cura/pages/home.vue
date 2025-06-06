@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import '~/assets/css/storage.css'
+
+const itemSelection = useItemSelectionStore("home")
+
+onMounted(()=>{
+})
+
+
 </script>
 <template>
     <div class="home-main-container">
