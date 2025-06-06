@@ -110,7 +110,8 @@ export async function getStorageItemParentsPath(storageItemId: string) {
         dir_path AS (
             SELECT
             item.id,
-            item.parent_id
+            item.parent_id,
+            item.name
             FROM
             storage_item item
             WHERE
@@ -118,7 +119,8 @@ export async function getStorageItemParentsPath(storageItemId: string) {
             UNION ALL
             SELECT
             s.id,
-            s.parent_id
+            s.parent_id,
+            s.name
             FROM
             storage_item s
             JOIN dir_path ON s.id = dir_path.parent_id
@@ -187,6 +189,10 @@ export async function getUserOwnedItem(userId: string, ownerRoleName: string) {
 }
 
 export async function getStorageItemChildren(storageItemId: string) {
-    const result = await db.select().from(tables.storageItem).where(eq(tables.storageItem.parentId, storageItemId))
+    const result = await db.select().from(tables.storageItem)
+        .where(and(
+            eq(tables.storageItem.parentId, storageItemId),
+            eq(tables.storageItem.uploadStatus, "FINISHED"),
+        ))
     return result
 }

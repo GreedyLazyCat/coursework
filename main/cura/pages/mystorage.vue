@@ -2,18 +2,13 @@
 import '~/assets/css/storage.css'
 import ChecksumService from '~/lib/hashingService'
 const hashingService = new ChecksumService()
+const { loggedIn, user } = useUserSession()
+const storageItemStore = useStorageItemStore()
+
+
 
 async function filesDropped(files: FileList) {
-    const formData = new FormData()
-
-    for (const file of files) {
-        console.log(file)
-        formData.append("blob", file.slice(0, 10))
-        $fetch('/api/upload/chunk', {
-            method: 'POST',
-            body: formData
-        })
-    }
+    console.log(files)
 }
 
 const showModal = ref(false)
@@ -24,6 +19,32 @@ function searchItemClicked(item: string) {
 function clickedOutsideModal() {
     showModal.value = false
 }
+
+function getStorageItemRenderName(storageItem: StorageItem) {
+    return (storageItem.type === "FILE") ?
+        `${storageItem.name}.${storageItem.mimeType}` :
+        `${storageItem.name}`
+}
+
+function getItemIcon(storageItem: StorageItem) {
+    return (storageItem.type === "FOLDER") ?
+        "folder" :
+        "file-present"
+}
+
+function itemDoubleClicked(storageItem: StorageItem) {
+    if (storageItem.type === "FOLDER") {
+        storageItemStore.openFolder(storageItem.parentId, storageItem.id, storageItem.name)
+    }
+}
+
+onMounted(() => {
+    if (loggedIn.value && user.value && storageItemStore.currentPath.length === 0) {
+        storageItemStore.rootId = user.value.rootItemId
+        storageItemStore.openRootFolder()
+    }
+})
+
 </script>
 
 <template>
@@ -44,8 +65,7 @@ function clickedOutsideModal() {
             </div>
         </div>
         <CuraFileSearch class="my-storage-search" @searchItemClicked="searchItemClicked" />
-
-        <h1 class="my-storage-title">Мое хранилище</h1>
+        <CuraStoragePath></CuraStoragePath>
         <div class="my-storage-grid-header">
             <div class="my-storage-grid-header-item">
                 <span>Имя</span>
@@ -68,16 +88,14 @@ function clickedOutsideModal() {
                     <span>Создать папку</span>
                 </div>
             </CuraContextMenu>
-            <CuraStorageItem isSelected name="test" lastModified="2021-01-01" size="100">
+            <CuraStorageItem v-for="item in storageItemStore.storageItems" :name="getStorageItemRenderName(item)"
+                :key="item.id" :lastModified="item.updatedAt ?? ''" :size="item.size.toString()"
+                @dblclick="itemDoubleClicked(item)">
                 <template #icon>
-                    <Icon name="material-symbols:folder" style="font-size: 20px;"></Icon>
+                    <Icon :name="`material-symbols:${getItemIcon(item)}`" style="font-size: 20px;"></Icon>
                 </template>
             </CuraStorageItem>
-            <CuraStorageItem name="test2" lastModified="2021-01-01" size="100">
-                <template #icon>
-                    <Icon name="material-symbols:file-present" style="font-size: 20px;"></Icon>
-                </template>
-            </CuraStorageItem>
+
         </DragNDropArea>
     </div>
 </template>
