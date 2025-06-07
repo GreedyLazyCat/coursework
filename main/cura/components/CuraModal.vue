@@ -1,7 +1,8 @@
 <script setup lang="ts">
-const { showModal = false, modalTitle = '' } = defineProps<{
+const { showModal = false, modalTitle = '', class: contentClass = '' } = defineProps<{
     showModal?: boolean,
-    modalTitle?: string
+    modalTitle?: string,
+    class?: string
 }>()
 
 
@@ -38,7 +39,7 @@ onUnmounted(() => {
                                 <Icon name="material-symbols:close"></Icon>
                             </span>
                         </div>
-                        <div class="cura-modal__content">
+                        <div class="cura-modal__content" :class="contentClass">
                             <slot></slot>
                         </div>
                     </div>

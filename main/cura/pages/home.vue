@@ -31,16 +31,7 @@ onMounted(()=>{
             </div>
         </div>
         <DragNDropArea class="my-storage-files-container">
-            <CuraStorageItem>
-                <template #icon>
-                    <Icon name="material-symbols:folder" style="font-size: 20px;"></Icon>
-                </template>
-            </CuraStorageItem>
-            <CuraStorageItem>
-                <template #icon>
-                    <Icon name="material-symbols:file-present" style="font-size: 20px;"></Icon>
-                </template>
-            </CuraStorageItem>
+            
         </DragNDropArea>
     </div>
 </template>

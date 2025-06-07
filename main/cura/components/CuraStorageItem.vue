@@ -1,23 +1,34 @@
 <script setup lang="ts">
-const { lastModified, size, name, isSelected = false } = defineProps<{
-    lastModified?: string;
-    size?: string;
-    name?: string;
+const { item, isSelected = false } = defineProps<{
+    item: StorageItem;
     isSelected?: boolean;
+    openRenameModal: (item: StorageItem) => void
+    openDeleteModal: (item: StorageItem) => void
 }>();
-const test = ref('fasdfsdf')
+
+
+const name = computed(() => {
+    return (item.type === "FOLDER") ? item.name : `${item.name}.${item.mimeType}`
+})
+
+const size = computed(() => {
+    return (item.type === "FILE") ? item.size : ''
+})
+
 function openContextMenu(e: MouseEvent) {
 }
+
 </script>
 
 <template>
     <div class="cura-storage-item" :class="{ 'cura-storage-item--selected': isSelected }">
+
         <CuraContextMenu class="cura-context-menu">
-            <div class="cura-context-menu-item">
+            <div class="cura-context-menu-item" @click="openRenameModal(item)">
                 <Icon name="material-symbols:edit" />
                 <span>Переименовать</span>
             </div>
-            <div class="cura-context-menu-item" @click="console.log(`delete ${name}`)">
+            <div class="cura-context-menu-item" @click="openDeleteModal(item)">
                 <Icon name="material-symbols:delete" />
                 <span>Удалить</span>
             </div>
@@ -29,10 +40,10 @@ function openContextMenu(e: MouseEvent) {
             <span>{{ name || 'Unknown' }}</span>
         </div>
         <div class="cura-storage-item__modified">
-            <span>{{ lastModified || 'Unknown' }}</span>
+            <span>{{ item.updatedAt || 'Unknown' }}</span>
         </div>
         <div class="cura-storage-item__size">
-            <span>{{ size || 'Unknown' }}</span>
+            <span>{{ size }}</span>
         </div>
         <div class="cura-storage-item__menu">
             <div class="cura-storage-item__menu-item" @mouseup="openContextMenu">

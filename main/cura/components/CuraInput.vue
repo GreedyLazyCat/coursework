@@ -1,10 +1,11 @@
 <script setup lang="ts">
-const { name = '', placeholder = '', type = 'text', hasError = false } = defineProps<{
+const { name = '', placeholder = '', type = 'text', hasError = false , class: className = ''} = defineProps<{
     name?: string,
     placeholder?: string,
     type?: string,
     hasError?: boolean,
     input?: () => void,
+    class?: string 
 }>()
 const model = defineModel<string>({ required: false })
 const inputRef = useTemplateRef('inputRef')
@@ -36,7 +37,7 @@ function blur() {
 }
 </script>
 <template>
-    <div class="cura-input-container">
+    <div class="cura-input-container" :class="className">
         <div class="cura-input" :class="{ 'cura-input--focused': focused, 'cura-input--error': hasError }"
             @mousedown="handleClick">
             <slot name="leading"></slot>

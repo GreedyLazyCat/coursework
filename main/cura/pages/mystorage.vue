@@ -5,13 +5,19 @@ const hashingService = new ChecksumService()
 const { loggedIn, user } = useUserSession()
 const storageItemStore = useStorageItemStore()
 const itemSelection = useItemSelectionStore("mystorage-item-selection")
+const showDeleteModal = ref(false)
+const showRenameModal = ref(false)
+const storageItemNameModel = ref('')
+const fileBeingRenamed = ref<StorageItem | null>(null)
 
+const modalAction = ref<() => void>(() => { })
 
 async function filesDropped(files: FileList) {
     console.log(files)
 }
 
 const showModal = ref(false)
+const folderName = ref('')
 
 function searchItemClicked(item: string) {
     console.log(item)
@@ -19,12 +25,6 @@ function searchItemClicked(item: string) {
 }
 function clickedOutsideModal() {
     showModal.value = false
-}
-
-function getStorageItemRenderName(storageItem: StorageItem) {
-    return (storageItem.type === "FILE") ?
-        `${storageItem.name}.${storageItem.mimeType}` :
-        `${storageItem.name}`
 }
 
 function getItemIcon(storageItem: StorageItem) {
@@ -39,8 +39,37 @@ function itemDoubleClicked(storageItem: StorageItem) {
     }
 }
 
-function itemClicked(item: StorageItem){
+function itemClicked(item: StorageItem) {
     itemSelection.add(item)
+}
+
+function createFolder() {
+    if (folderName.value !== '') {
+        storageItemStore.createFolder(folderName.value)
+        showModal.value = false
+    }
+}
+
+function renameFile() {
+    if (fileBeingRenamed.value) {
+        fileBeingRenamed.value.name = storageItemNameModel.value
+        storageItemStore.updateFile(fileBeingRenamed.value)
+        showRenameModal.value = false
+    }
+}
+
+function openRenameModal(item: StorageItem) {
+    showRenameModal.value = true
+    storageItemNameModel.value = item.name
+    fileBeingRenamed.value = item
+}
+
+function openDeleteModal(item: StorageItem) {
+    modalAction.value = () => {
+        storageItemStore.deleteItem(item)
+        showDeleteModal.value = false
+    }
+    showDeleteModal.value = true
 }
 
 onMounted(() => {
@@ -54,7 +83,29 @@ onMounted(() => {
 
 <template>
     <div class="page-main-container">
-        <CuraModal modal-title="test" :show-modal="showModal" @clicked-outside="clickedOutsideModal">test</CuraModal>
+        <CuraModal modal-title="Создать папку" :show-modal="showModal" @clicked-outside="clickedOutsideModal"
+            class="create-folder-modal-content">
+            <CuraInput placeholder="Название папки" class="create-folder-modal-content__input" v-model="folderName">
+            </CuraInput>
+            <button class="cura-btn create-folder-modal-content__btn" @click="createFolder">Создать</button>
+        </CuraModal>
+        <CuraModal modal-title="Переименовать" :show-modal="showRenameModal" @clicked-outside="showRenameModal = false">
+            <form class="rename-modal-content" @submit.prevent="renameFile">
+                <CuraInput placeholder="Имя файла/папки" class="rename-modal-content__input"
+                    v-model="storageItemNameModel">
+                </CuraInput>
+                <button class="cura-btn rename-modal-content__btn" @click="renameFile">Переименовать</button>
+            </form>
+        </CuraModal>
+        <CuraModal modal-title="Подтверждение" :show-modal="showDeleteModal" @clicked-outside="showDeleteModal = false">
+            <form class="rename-modal-content" @submit.prevent="renameFile">
+                <p>Вы действительно хотите удалить файл/папку?</p>
+                <div class="delete-modal-content__btns">
+                    <button class="cura-btn rename-modal-content__btn" @click="modalAction()">Удалить</button>
+                    <button class="cura-btn rename-modal-content__btn" @click="showDeleteModal = false">Отмена</button>
+                </div>
+            </form>
+        </CuraModal>
         <CuraFileInfo name="test" path="test" v-if="false" />
         <div class="cura-selection-toolbar" v-if="false">
             <div class="cura-selection-toolbar-left-items">
@@ -88,14 +139,14 @@ onMounted(() => {
         </div>
         <DragNDropArea class="my-storage-files-container" @files-dropped="filesDropped">
             <CuraContextMenu class="cura-context-menu">
-                <div class="cura-context-menu-item">
+                <div class="cura-context-menu-item" @click="showModal = true">
                     <Icon name="material-symbols:create-new-folder" />
                     <span>Создать папку</span>
                 </div>
             </CuraContextMenu>
-            <CuraStorageItem v-for="item in storageItemStore.storageItems" :name="getStorageItemRenderName(item)"
-                :key="item.id" :lastModified="item.updatedAt ?? ''" :size="item.size.toString()"
-                @dblclick="itemDoubleClicked(item)" @click="itemClicked(item)">
+            <CuraStorageItem v-for="item in storageItemStore.storageItems" :item="item"
+                @dblclick="itemDoubleClicked(item)" @click="itemClicked(item)" :open-rename-modal="openRenameModal"
+                :open-delete-modal="openDeleteModal">
                 <template #icon>
                     <Icon :name="`material-symbols:${getItemIcon(item)}`" style="font-size: 20px;"></Icon>
                 </template>
@@ -154,5 +205,41 @@ onMounted(() => {
 
 .cura-icon-button .icon {
     font-size: 20px;
+}
+
+.create-folder-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: end;
+}
+
+.create-folder-modal-content__btn {
+    width: fit-content;
+}
+
+.create-folder-modal-content__input {
+    width: 100%;
+}
+
+
+.rename-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: end;
+}
+
+.rename-modal-content__btn {
+    width: fit-content;
+}
+
+.rename-modal-content__input {
+    width: 100%;
+}
+
+.delete-modal-content__btns {
+    display: flex;
+    gap: 8px;
 }
 </style>
