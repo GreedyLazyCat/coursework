@@ -4,7 +4,8 @@ import '~/assets/css/storage.css'
 import ChecksumService from '~/lib/hashingService'
 const hashingService = new ChecksumService()
 const { loggedIn, user } = useUserSession()
-const storageItemStore = useStorageItemStore()
+const itemStoreName = ref("mystorage-item-store")
+const storageItemStore = useStorageItemStore(itemStoreName.value)
 const itemSelection = useItemSelectionStore("mystorage-item-selection")
 const showRenameModal = ref(false)
 const storageItemNameModel = ref('')
@@ -115,31 +116,6 @@ onMounted(() => {
 
 <template>
     <div class="page-main-container">
-        <CuraModal modal-title="Создать папку" :show-modal="showModal" @clicked-outside="clickedOutsideModal">
-            <form class="create-folder-modal-content" @submit.prevent>
-                <CuraInput placeholder="Название папки" class="create-folder-modal-content__input" v-model="folderName">
-                </CuraInput>
-                <button class="cura-btn create-folder-modal-content__btn" @click="createFolder">Создать</button>
-            </form>
-        </CuraModal>
-        <CuraModal modal-title="Переименовать" :show-modal="showRenameModal" @clicked-outside="showRenameModal = false">
-            <form class="rename-modal-content" @submit.prevent="renameFile">
-                <CuraInput placeholder="Имя файла/папки" class="rename-modal-content__input"
-                    v-model="storageItemNameModel">
-                </CuraInput>
-                <button class="cura-btn rename-modal-content__btn" @click="renameFile">Переименовать</button>
-            </form>
-        </CuraModal>
-        <CuraModal :modal-title="modal.title" :show-modal="modal.showModal" @clicked-outside="modal.showModal = false">
-            <form class="rename-modal-content" @submit.prevent>
-                <p>{{ modal.text }}</p>
-                <div class="delete-modal-content__btns">
-                    <button class="cura-btn rename-modal-content__btn" @click="modal.action()">{{
-                        modal.actionName }}</button>
-                    <button class="cura-btn rename-modal-content__btn" @click="modal.showModal = false">Отмена</button>
-                </div>
-            </form>
-        </CuraModal>
         <CuraFileInfo name="test" path="test" v-if="false" />
         <div class="cura-selection-toolbar" v-if="itemSelection.isNotEmpty">
             <div class="cura-selection-toolbar-left-items">
@@ -155,7 +131,7 @@ onMounted(() => {
             </div>
         </div>
         <CuraFileSearch class="my-storage-search" @searchItemClicked="searchItemClicked" />
-        <CuraStoragePath></CuraStoragePath>
+        <CuraStoragePath :item-store-name="itemStoreName"></CuraStoragePath>
         <div class="my-storage-grid-header">
             <div class="my-storage-grid-header-item">
                 <span>Имя</span>
@@ -171,39 +147,7 @@ onMounted(() => {
                 <Icon name="material-symbols:more-vert" class="icon" />
             </div>
         </div>
-        <DragNDropArea class="my-storage-files-container" @files-dropped="filesDropped">
-            <CuraContextMenu class="cura-context-menu" @click="pageClicked">
-                <div class="cura-context-menu-item cura-context-menu-item--hoverable" @click="showModal = true">
-                    <Icon name="material-symbols:create-new-folder" />
-                    <span>Создать папку</span>
-                </div>
-            </CuraContextMenu>
-            <CuraStorageItem v-for="item in storageItemStore.storageItems" :item="item"
-                @dblclick="itemDoubleClicked(item)" @click="itemClicked($event, item)"
-                :open-rename-modal="openRenameModal" :open-delete-modal="openDeleteModal"
-                :is-selected="itemSelection.hasItem(item)">
-                <template #context-menu>
-                    <CuraContextMenu class="cura-context-menu">
-                        <div class="cura-context-menu-item" @click.stop="openRenameModal(item)" :class="{
-                            'cura-context-menu-item--disabled': itemSelection.length > 1,
-                            'cura-context-menu-item--hoverable': itemSelection.length === 1
-                        }">
-                            <Icon name="material-symbols:edit" />
-                            <span>Переименовать</span>
-                        </div>
-                        <div class="cura-context-menu-item cura-context-menu-item--hoverable"
-                            @click.stop="openDeleteModal(item)">
-                            <Icon name="material-symbols:delete" />
-                            <span>Удалить</span>
-                        </div>
-                    </CuraContextMenu>
-                </template>
-                <template #icon>
-                    <Icon :name="`material-symbols:${getItemIcon(item)}`" style="font-size: 20px;"></Icon>
-                </template>
-            </CuraStorageItem>
-
-        </DragNDropArea>
+        <CuraFileView :item-store-name="itemStoreName" selection-store-name="mystorage-item-selection"></CuraFileView>
     </div>
 </template>
 <style>

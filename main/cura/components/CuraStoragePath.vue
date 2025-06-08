@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const storageItemStore = useStorageItemStore()
+
+const {itemStoreName} = defineProps<{
+    itemStoreName: string
+}>()
+
+const storageItemStore = useStorageItemStore(itemStoreName)
 
 function isItemLast(item: PathItem) {
     return item === storageItemStore.lastPathItem
