@@ -10,17 +10,27 @@ export const useItemSelectionStore = (id: string) => {
             },
             isNotEmpty(): boolean {
                 return this.selectedItems.length > 0
+            },
+            length(): number {
+                return this.selectedItems.length
+            },
+            hasItem() {
+                return (item: StorageItem) => {
+                    return this.selectedItems.findIndex((e) => e.id === item.id) !== -1
+                }
             }
         },
         actions: {
             add(item: StorageItem) {
-                this.selectedItems.push(item)
+                if (!this.hasItem(item)) {
+                    this.selectedItems.push(item)
+                }
             },
             clear() {
                 this.selectedItems = []
             },
-            remove(item: StorageItem){
-            
+            remove(item: StorageItem) {
+
             }
         }
     })

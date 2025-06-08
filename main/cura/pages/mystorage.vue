@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ConsoleLogWriter } from 'drizzle-orm'
 import '~/assets/css/storage.css'
 import ChecksumService from '~/lib/hashingService'
 const hashingService = new ChecksumService()
@@ -41,10 +42,14 @@ function getItemIcon(storageItem: StorageItem) {
 function itemDoubleClicked(storageItem: StorageItem) {
     if (storageItem.type === "FOLDER") {
         storageItemStore.openFolder(storageItem.parentId, storageItem.id, storageItem.name)
+        itemSelection.clear()
     }
 }
 
-function itemClicked(item: StorageItem) {
+function itemClicked(event: MouseEvent, item: StorageItem) {
+    if (!event.ctrlKey) {
+        itemSelection.clear()
+    }
     itemSelection.add(item)
 }
 
@@ -64,20 +69,39 @@ function renameFile() {
 }
 
 function openRenameModal(item: StorageItem) {
+    if (itemSelection.length > 1) {
+        return
+    }
     showRenameModal.value = true
     storageItemNameModel.value = item.name
     fileBeingRenamed.value = item
 }
 
 function openDeleteModal(item: StorageItem) {
-    modal.action = () => {
-        storageItemStore.deleteItem(item)
+    modal.action = async () => {
+        if (itemSelection.isNotEmpty) {
+            for (const selectionItem of itemSelection.selectedItems) {
+                await storageItemStore.deleteItem(selectionItem)
+            }
+            itemSelection.clear()
+        }
+        else {
+            itemSelection.remove(item)
+            storageItemStore.deleteItem(item)
+
+        }
         modal.showModal = false
     }
     modal.showModal = true
     modal.actionName = "Удалить"
     modal.title = "Подверждение"
     modal.text = "Вы действительно хотите удалить этот файл/папку?"
+}
+
+function pageClicked(event: MouseEvent) {
+    if (event.target === event.currentTarget) {
+        itemSelection.clear()
+    }
 }
 
 onMounted(() => {
@@ -117,15 +141,15 @@ onMounted(() => {
             </form>
         </CuraModal>
         <CuraFileInfo name="test" path="test" v-if="false" />
-        <div class="cura-selection-toolbar" v-if="false">
+        <div class="cura-selection-toolbar" v-if="itemSelection.isNotEmpty">
             <div class="cura-selection-toolbar-left-items">
-                <div class="cura-icon-button">
+                <div class="cura-icon-button" @click="itemSelection.clear()">
                     <Icon name="material-symbols:close" class="icon" />
                 </div>
-                <span>Выбрано элементов: 1</span>
-                <div class="cura-icon-button">
+                <span>Выбрано элементов: {{ itemSelection.length }}</span>
+                <!-- <div class="cura-icon-button">
                     <Icon name="material-symbols:more-vert" class="icon" />
-                </div>
+                </div> -->
             </div>
             <div class="cura-selection-toolbar-right-items">
             </div>
@@ -148,15 +172,32 @@ onMounted(() => {
             </div>
         </div>
         <DragNDropArea class="my-storage-files-container" @files-dropped="filesDropped">
-            <CuraContextMenu class="cura-context-menu">
-                <div class="cura-context-menu-item" @click="showModal = true">
+            <CuraContextMenu class="cura-context-menu" @click="pageClicked">
+                <div class="cura-context-menu-item cura-context-menu-item--hoverable" @click="showModal = true">
                     <Icon name="material-symbols:create-new-folder" />
                     <span>Создать папку</span>
                 </div>
             </CuraContextMenu>
             <CuraStorageItem v-for="item in storageItemStore.storageItems" :item="item"
-                @dblclick="itemDoubleClicked(item)" @click="itemClicked(item)" :open-rename-modal="openRenameModal"
-                :open-delete-modal="openDeleteModal">
+                @dblclick="itemDoubleClicked(item)" @click="itemClicked($event, item)"
+                :open-rename-modal="openRenameModal" :open-delete-modal="openDeleteModal"
+                :is-selected="itemSelection.hasItem(item)">
+                <template #context-menu>
+                    <CuraContextMenu class="cura-context-menu">
+                        <div class="cura-context-menu-item" @click.stop="openRenameModal(item)" :class="{
+                            'cura-context-menu-item--disabled': itemSelection.length > 1,
+                            'cura-context-menu-item--hoverable': itemSelection.length === 1
+                        }">
+                            <Icon name="material-symbols:edit" />
+                            <span>Переименовать</span>
+                        </div>
+                        <div class="cura-context-menu-item cura-context-menu-item--hoverable"
+                            @click.stop="openDeleteModal(item)">
+                            <Icon name="material-symbols:delete" />
+                            <span>Удалить</span>
+                        </div>
+                    </CuraContextMenu>
+                </template>
                 <template #icon>
                     <Icon :name="`material-symbols:${getItemIcon(item)}`" style="font-size: 20px;"></Icon>
                 </template>

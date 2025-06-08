@@ -22,17 +22,8 @@ function openContextMenu(e: MouseEvent) {
 
 <template>
     <div class="cura-storage-item" :class="{ 'cura-storage-item--selected': isSelected }">
-
-        <CuraContextMenu class="cura-context-menu">
-            <div class="cura-context-menu-item" @click="openRenameModal(item)">
-                <Icon name="material-symbols:edit" />
-                <span>Переименовать</span>
-            </div>
-            <div class="cura-context-menu-item" @click="openDeleteModal(item)">
-                <Icon name="material-symbols:delete" />
-                <span>Удалить</span>
-            </div>
-        </CuraContextMenu>
+        <slot name="context-menu"></slot>
+        
         <div class="cura-storage-item__name">
             <div class="cura-storage-item__icon">
                 <slot name="icon"></slot>
@@ -128,28 +119,5 @@ function openContextMenu(e: MouseEvent) {
     background-color: var(--md-sys-color-surface-container-highest);
 }
 
-.cura-context-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background-color: var(--md-sys-color-surface-container);
-    border-radius: 8px;
-    padding: 8px;
-    border: 1px solid var(--md-sys-color-outline-variant);
-    width: 250px;
-    color: var(--md-sys-color-on-surface);
-}
 
-.cura-context-menu-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.cura-context-menu-item:hover {
-    background-color: var(--md-sys-color-surface-container-high);
-}
 </style>
