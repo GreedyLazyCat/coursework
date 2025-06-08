@@ -116,6 +116,7 @@ onMounted(() => {
 
 <template>
     <div class="page-main-container">
+        <CuraMoveItemModal></CuraMoveItemModal>
         <CuraFileInfo name="test" path="test" v-if="false" />
         <div class="cura-selection-toolbar" v-if="itemSelection.isNotEmpty">
             <div class="cura-selection-toolbar-left-items">

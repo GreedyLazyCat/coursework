@@ -64,7 +64,7 @@ onUnmounted(() => {
 .cura-modal {
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: fit-content;
     border: 1px solid var(--md-sys-color-outline-variant);
     background-color: var(--md-sys-color-surface-container);
     z-index: 250;

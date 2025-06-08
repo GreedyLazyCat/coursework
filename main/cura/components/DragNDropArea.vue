@@ -4,8 +4,9 @@ import { ref } from 'vue'
 const showCover = ref(false)
 const emit = defineEmits<{ (e: 'filesDropped', files: FileList): void }>()
 const parent = useTemplateRef('parent')
-const { class: className } = defineProps<{
-    class?: string
+const { class: className, fileDraggingEnabled = true} = defineProps<{
+    class?: string;
+    fileDraggingEnabled?: boolean
 }>()
 
 
@@ -23,7 +24,7 @@ function dragLeave(e: DragEvent) {
 }
 </script>
 <template>
-    <div ref="parent" class="DragNDropArea" @drop.prevent="drop" @dragover.prevent="" @dragenter.prevent="showCover = true"
+    <div ref="parent" class="DragNDropArea" @drop.prevent="drop" @dragover.prevent="" @dragenter.prevent="showCover = true && fileDraggingEnabled"
         @dragleave="dragLeave" :class="className">
         <slot></slot>
         <div class="DragNDropAreaCover" v-if="showCover">

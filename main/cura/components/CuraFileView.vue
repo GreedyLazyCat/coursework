@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-const { itemStoreName = "storage-item-store", selectionStoreName = "selection-store" } = defineProps<{
+const { itemStoreName = "storage-item-store", selectionStoreName = "selection-store", fileDraggingEnabled = true } = defineProps<{
     itemStoreName?: string;
     selectionStoreName?: string;
+    fileDraggingEnabled?: boolean
 }>()
 const { loggedIn, user } = useUserSession()
 const storageItemStore = useStorageItemStore(itemStoreName)
@@ -109,7 +110,7 @@ onMounted(() => {
 })
 </script>
 <template>
-    <DragNDropArea class="my-storage-files-container" @files-dropped="filesDropped">
+    <DragNDropArea class="my-storage-files-container" @files-dropped="filesDropped" :file-dragging-enabled="fileDraggingEnabled">
         <CuraModal modal-title="Создать папку" :show-modal="showModal" @clicked-outside="clickedOutsideModal">
             <form class="create-folder-modal-content" @submit.prevent>
                 <CuraInput placeholder="Название папки" class="create-folder-modal-content__input" v-model="folderName">
@@ -148,7 +149,7 @@ onMounted(() => {
                 <CuraContextMenu class="cura-context-menu">
                     <div class="cura-context-menu-item" @click.stop="openRenameModal(item)" :class="{
                         'cura-context-menu-item--disabled': itemSelection.length > 1,
-                        'cura-context-menu-item--hoverable': itemSelection.length === 1
+                        'cura-context-menu-item--hoverable': itemSelection.length <= 1
                     }">
                         <Icon name="material-symbols:edit" />
                         <span>Переименовать</span>

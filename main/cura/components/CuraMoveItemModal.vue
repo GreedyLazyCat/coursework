@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const { loggedIn, user } = useUserSession()
+const itemStoreName = ref("move-storage-item-modal")
+const selectionStoreName = ref("move-storage-selection-modal")
 const storageItemStore = useStorageItemStore("move-storage-item-modal")
 
 onMounted(() => {
@@ -11,5 +13,8 @@ onMounted(() => {
 
 </script>
 <template>
-    
+    <CuraModal :show-modal="true">
+        <CuraFileView :item-store-name="itemStoreName" :selection-store-name="selectionStoreName"></CuraFileView>
+        <CuraStoragePath :item-store-name="itemStoreName"></CuraStoragePath>
+    </CuraModal>
 </template>
