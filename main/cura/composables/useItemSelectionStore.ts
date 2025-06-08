@@ -16,6 +16,12 @@ export const useItemSelectionStore = (id: string) => {
             add(item: StorageItem) {
                 this.selectedItems.push(item)
             },
+            clear() {
+                this.selectedItems = []
+            },
+            remove(item: StorageItem){
+            
+            }
         }
     })
     return store()

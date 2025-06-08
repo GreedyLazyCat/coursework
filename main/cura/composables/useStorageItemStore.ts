@@ -30,7 +30,7 @@ export const useStorageItemStore = defineStore("userStorageItems", {
     actions: {
         async openFolder(parentId: string | null, folderId: string, folderName: string) {
             const folderItems = await fetchFolderItems(folderId)
-            // console.log(this.currentPath)
+            const folderIndex = this.currentPath.findIndex((e) => e.id === folderId)
             // console.log(`${parentId}, ${folderId}, ${folderName}`)
             if (parentId && this.currentPath[this.currentPath.length - 1].id === parentId) {
                 this.currentPath.push({
@@ -38,6 +38,8 @@ export const useStorageItemStore = defineStore("userStorageItems", {
                     parent_id: parentId,
                     name: folderName
                 })
+            } else if (folderIndex !== -1) {
+                this.currentPath = this.currentPath.slice(0, folderIndex + 1)
             } else {
                 const folderPath = await $fetch<PathItem[]>(`/api/storage-item/read-path/${folderId}`)
                 folderPath.reverse()
@@ -72,6 +74,7 @@ export const useStorageItemStore = defineStore("userStorageItems", {
                     parentId: this.lastPathItem?.id
                 }
             })
+            console.log(created)
             this.storageItems.push(created)
         },
         async updateFile(item: StorageItem) {

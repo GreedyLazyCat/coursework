@@ -5,12 +5,17 @@ const hashingService = new ChecksumService()
 const { loggedIn, user } = useUserSession()
 const storageItemStore = useStorageItemStore()
 const itemSelection = useItemSelectionStore("mystorage-item-selection")
-const showDeleteModal = ref(false)
 const showRenameModal = ref(false)
 const storageItemNameModel = ref('')
 const fileBeingRenamed = ref<StorageItem | null>(null)
+const modal = reactive({
+    showModal: false,
+    action: () => { },
+    title: "",
+    text: "",
+    actionName: ""
+})
 
-const modalAction = ref<() => void>(() => { })
 
 async function filesDropped(files: FileList) {
     console.log(files)
@@ -65,11 +70,14 @@ function openRenameModal(item: StorageItem) {
 }
 
 function openDeleteModal(item: StorageItem) {
-    modalAction.value = () => {
+    modal.action = () => {
         storageItemStore.deleteItem(item)
-        showDeleteModal.value = false
+        modal.showModal = false
     }
-    showDeleteModal.value = true
+    modal.showModal = true
+    modal.actionName = "Удалить"
+    modal.title = "Подверждение"
+    modal.text = "Вы действительно хотите удалить этот файл/папку?"
 }
 
 onMounted(() => {
@@ -83,11 +91,12 @@ onMounted(() => {
 
 <template>
     <div class="page-main-container">
-        <CuraModal modal-title="Создать папку" :show-modal="showModal" @clicked-outside="clickedOutsideModal"
-            class="create-folder-modal-content">
-            <CuraInput placeholder="Название папки" class="create-folder-modal-content__input" v-model="folderName">
-            </CuraInput>
-            <button class="cura-btn create-folder-modal-content__btn" @click="createFolder">Создать</button>
+        <CuraModal modal-title="Создать папку" :show-modal="showModal" @clicked-outside="clickedOutsideModal">
+            <form class="create-folder-modal-content" @submit.prevent>
+                <CuraInput placeholder="Название папки" class="create-folder-modal-content__input" v-model="folderName">
+                </CuraInput>
+                <button class="cura-btn create-folder-modal-content__btn" @click="createFolder">Создать</button>
+            </form>
         </CuraModal>
         <CuraModal modal-title="Переименовать" :show-modal="showRenameModal" @clicked-outside="showRenameModal = false">
             <form class="rename-modal-content" @submit.prevent="renameFile">
@@ -97,12 +106,13 @@ onMounted(() => {
                 <button class="cura-btn rename-modal-content__btn" @click="renameFile">Переименовать</button>
             </form>
         </CuraModal>
-        <CuraModal modal-title="Подтверждение" :show-modal="showDeleteModal" @clicked-outside="showDeleteModal = false">
-            <form class="rename-modal-content" @submit.prevent="renameFile">
-                <p>Вы действительно хотите удалить файл/папку?</p>
+        <CuraModal :modal-title="modal.title" :show-modal="modal.showModal" @clicked-outside="modal.showModal = false">
+            <form class="rename-modal-content" @submit.prevent>
+                <p>{{ modal.text }}</p>
                 <div class="delete-modal-content__btns">
-                    <button class="cura-btn rename-modal-content__btn" @click="modalAction()">Удалить</button>
-                    <button class="cura-btn rename-modal-content__btn" @click="showDeleteModal = false">Отмена</button>
+                    <button class="cura-btn rename-modal-content__btn" @click="modal.action()">{{
+                        modal.actionName }}</button>
+                    <button class="cura-btn rename-modal-content__btn" @click="modal.showModal = false">Отмена</button>
                 </div>
             </form>
         </CuraModal>
