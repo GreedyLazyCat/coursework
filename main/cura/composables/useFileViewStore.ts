@@ -14,7 +14,7 @@ export const useFileViewStore = (id: string) => {
             showMoveModal: false,
             showCreateFolderModal: false,
             fileBeingRenamed: {} as StorageItem | null,
-
+            filesBeingMoved: [] as StorageItem[]
         }),
         getters: {
         },

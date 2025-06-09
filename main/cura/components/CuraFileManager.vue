@@ -18,11 +18,6 @@ async function filesDropped(files: FileList) {
 
 const folderName = ref('')
 
-function getItemIcon(storageItem: StorageItem) {
-    return (storageItem.type === "FOLDER") ?
-        "folder" :
-        "file-present"
-}
 
 function itemDoubleClicked(event: MouseEvent, storageItem: StorageItem) {
     if (storageItem.type === "FOLDER") {
@@ -31,11 +26,23 @@ function itemDoubleClicked(event: MouseEvent, storageItem: StorageItem) {
     }
 }
 
-function itemClicked(event: MouseEvent, item: StorageItem) { 
-    if (!event.ctrlKey) {
+function itemClicked(event: MouseEvent, item: StorageItem, rightBtn: boolean) {
+    if (!event.ctrlKey && !itemSelection.hasItem(item)) {
         itemSelection.clear()
     }
     itemSelection.add(item)
+}
+
+async function moveConfirmed(pathItem: PathItem) {
+    for (const storageItem of itemSelection.selectedItems) {
+        if (storageItem.parentId === pathItem.id) {
+            continue
+        }
+        storageItem.parentId = pathItem.id
+        await storageItemStore.updateFile(storageItem)
+        storageItemStore.deleteItemClientSide(storageItem)
+    }
+    fileViewStore.closeMoveModal()
 }
 
 function createFolder() {
@@ -80,6 +87,10 @@ function openDeleteModal(item: StorageItem) {
     fileViewStore.simpleModal.actionName = "Удалить"
     fileViewStore.simpleModal.title = "Подверждение"
     fileViewStore.simpleModal.text = "Вы действительно хотите удалить этот файл/папку?"
+}
+
+function openMoveModal(item: StorageItem) {
+    fileViewStore.openMoveModal()
 }
 
 function pageClicked(event: MouseEvent) {
@@ -145,16 +156,12 @@ onMounted(() => {
                     </div>
                 </form>
             </CuraModal>
-            <CuraContextMenu class="cura-context-menu" @click="pageClicked">
-                <div class="cura-context-menu-item cura-context-menu-item--hoverable"
-                    @click="fileViewStore.openCreateFolderModal()">
-                    <Icon name="material-symbols:create-new-folder" />
-                    <span>Создать папку</span>
-                </div>
-            </CuraContextMenu>
+            <CuraMoveItemModal :show-modal="fileViewStore.showMoveModal"
+                @clicked-outside="fileViewStore.closeMoveModal()" @move-confirmed="moveConfirmed"></CuraMoveItemModal>
             <CuraFileViewCore :item-store-name="itemStoreName" :selection-store-name="itemSelectionStoreName"
                 :file-view-store-name="fileViewStoreName" @delete="openDeleteModal" @rename="openRenameModal"
-                @item-clicked="itemClicked" @item-double-clicked="itemDoubleClicked"></CuraFileViewCore>
+                @item-clicked="itemClicked" @item-double-clicked="itemDoubleClicked" @move="openMoveModal">
+            </CuraFileViewCore>
         </div>
     </div>
 
@@ -168,7 +175,7 @@ onMounted(() => {
     height: 100%;
 }
 
-.cura-file-manager__file-view{
+.cura-file-manager__file-view {
     height: 100%;
     position: relative;
 }

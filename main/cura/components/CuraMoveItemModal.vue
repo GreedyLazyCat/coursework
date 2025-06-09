@@ -8,7 +8,7 @@ const { showModal } = toRefs(props)
 
 const emit = defineEmits<{
     clickedOutside: [],
-    moveConfirmed: [pathItem: PathItem, storageItem: StorageItem]
+    moveConfirmed: [pathItem: PathItem]
 }>()
 
 const { loggedIn, user } = useUserSession()
@@ -22,9 +22,15 @@ function clicked() {
 
 function moveItems() {
     if (storageItemStore.lastPathItem) {
-        // emit('moveConfirmed', storageItemStore.lastPathItem, )
+        emit('moveConfirmed', storageItemStore.lastPathItem)
     }
 }
+function itemDoubleClicked(event: MouseEvent, storageItem: StorageItem) {
+    if (storageItem.type === "FOLDER") {
+        storageItemStore.openFolder(storageItem.parentId, storageItem.id, storageItem.name)
+    }
+}
+
 
 watch(showModal, (newValue, oldValue) => {
     if (newValue && loggedIn.value && user.value) {
@@ -46,7 +52,8 @@ onMounted(() => {
         <div class="cura-move-item-modal-container">
             <CuraStoragePath :item-store-name="itemStoreName"></CuraStoragePath>
             <CuraFileViewCore :item-store-name="itemStoreName" :selection-store-name="selectionStoreName"
-                :selection-enabled="false" :context-menu-enabled="false" :file-dragging-enabled="false"></CuraFileViewCore>
+                @item-double-clicked="itemDoubleClicked" :selection-enabled="false" :context-menu-enabled="false"
+                :file-dragging-enabled="false"></CuraFileViewCore>
             <p class="cura-move-item-modal-container__info">
                 Файл будет перемещен в {{ `"${storageItemStore.lastPathItem?.name}"` }}
             </p>
@@ -62,6 +69,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    width: 600px;
 }
 
 .cura-move-item-modal-container__info {

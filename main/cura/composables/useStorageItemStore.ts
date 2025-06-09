@@ -95,8 +95,12 @@ export const useStorageItemStore = (name: string) => {
                     await $fetch(`/api/storage-item/delete/${item.id}`, {
                         method: "DELETE"
                     })
-                    this.storageItems.splice(foundItemIndex, 1)
+                    this.deleteItemClientSide(item)
                 }
+            },
+            deleteItemClientSide(item: StorageItem) {
+                const foundItemIndex = this.storageItems.findIndex((e) => e.id === item.id)
+                this.storageItems.splice(foundItemIndex, 1)
             }
         }
     })
