@@ -1,110 +1,16 @@
 <script setup lang="ts">
-import { ConsoleLogWriter } from 'drizzle-orm'
 import '~/assets/css/storage.css'
-import ChecksumService from '~/lib/hashingService'
-const hashingService = new ChecksumService()
 const { loggedIn, user } = useUserSession()
 const itemStoreName = ref("mystorage-item-store")
 const storageItemStore = useStorageItemStore(itemStoreName.value)
 const itemSelection = useItemSelectionStore("mystorage-item-selection")
-const showRenameModal = ref(false)
-const storageItemNameModel = ref('')
-const fileBeingRenamed = ref<StorageItem | null>(null)
-const modal = reactive({
-    showModal: false,
-    action: () => { },
-    title: "",
-    text: "",
-    actionName: ""
-})
-
-
-async function filesDropped(files: FileList) {
-    console.log(files)
-}
 
 const showModal = ref(false)
-const folderName = ref('')
 
 function searchItemClicked(item: string) {
     console.log(item)
     showModal.value = true
 }
-function clickedOutsideModal() {
-    showModal.value = false
-}
-
-function getItemIcon(storageItem: StorageItem) {
-    return (storageItem.type === "FOLDER") ?
-        "folder" :
-        "file-present"
-}
-
-function itemDoubleClicked(storageItem: StorageItem) {
-    if (storageItem.type === "FOLDER") {
-        storageItemStore.openFolder(storageItem.parentId, storageItem.id, storageItem.name)
-        itemSelection.clear()
-    }
-}
-
-function itemClicked(event: MouseEvent, item: StorageItem) {
-    if (!event.ctrlKey) {
-        itemSelection.clear()
-    }
-    itemSelection.add(item)
-}
-
-function createFolder() {
-    if (folderName.value !== '') {
-        storageItemStore.createFolder(folderName.value)
-        showModal.value = false
-    }
-}
-
-function renameFile() {
-    if (fileBeingRenamed.value) {
-        fileBeingRenamed.value.name = storageItemNameModel.value
-        storageItemStore.updateFile(fileBeingRenamed.value)
-        showRenameModal.value = false
-    }
-}
-
-function openRenameModal(item: StorageItem) {
-    if (itemSelection.length > 1) {
-        return
-    }
-    showRenameModal.value = true
-    storageItemNameModel.value = item.name
-    fileBeingRenamed.value = item
-}
-
-function openDeleteModal(item: StorageItem) {
-    modal.action = async () => {
-        if (itemSelection.isNotEmpty) {
-            for (const selectionItem of itemSelection.selectedItems) {
-                await storageItemStore.deleteItem(selectionItem)
-            }
-            itemSelection.clear()
-        }
-        else {
-            itemSelection.remove(item)
-            storageItemStore.deleteItem(item)
-
-        }
-        modal.showModal = false
-    }
-    modal.showModal = true
-    modal.actionName = "Удалить"
-    modal.title = "Подверждение"
-    modal.text = "Вы действительно хотите удалить этот файл/папку?"
-}
-
-function pageClicked(event: MouseEvent) {
-    if (event.target === event.currentTarget) {
-        itemSelection.clear()
-    }
-}
-
 onMounted(() => {
     if (loggedIn.value && user.value && storageItemStore.currentPath.length === 0) {
         storageItemStore.rootId = user.value.rootItemId
@@ -116,7 +22,6 @@ onMounted(() => {
 
 <template>
     <div class="page-main-container">
-        <CuraMoveItemModal></CuraMoveItemModal>
         <CuraFileInfo name="test" path="test" v-if="false" />
         <div class="cura-selection-toolbar" v-if="itemSelection.isNotEmpty">
             <div class="cura-selection-toolbar-left-items">

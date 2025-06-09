@@ -65,7 +65,7 @@ onMounted(() => {
 
 .cura-context-menu-content {
     position: fixed;
-    background-color: red;
+    /* background-color: red; */
     z-index: 100;
 }
 </style>

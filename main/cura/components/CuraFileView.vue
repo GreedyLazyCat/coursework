@@ -1,16 +1,28 @@
 <script lang="ts" setup>
-const { itemStoreName = "storage-item-store", selectionStoreName = "selection-store", fileDraggingEnabled = true } = defineProps<{
+
+const {
+    itemStoreName = "storage-item-store",
+    selectionStoreName = "selection-store",
+    fileDraggingEnabled = true,
+    moveEnabled = true,
+    contextMenuEnabled = true,
+    selectionEnabled = true
+} = defineProps<{
     itemStoreName?: string;
     selectionStoreName?: string;
-    fileDraggingEnabled?: boolean
+    fileDraggingEnabled?: boolean;
+    moveEnabled?: boolean;
+    contextMenuEnabled?: boolean;
+    selectionEnabled?: boolean;
 }>()
 const { loggedIn, user } = useUserSession()
 const storageItemStore = useStorageItemStore(itemStoreName)
 const itemSelection = useItemSelectionStore(selectionStoreName)
 const showRenameModal = ref(false)
+const showMoveModal = ref(false)
 const storageItemNameModel = ref('')
 const fileBeingRenamed = ref<StorageItem | null>(null)
-const modal = reactive({
+const simpleModal = reactive({
     showModal: false,
     action: () => { },
     title: "",
@@ -45,6 +57,9 @@ function itemDoubleClicked(storageItem: StorageItem) {
 }
 
 function itemClicked(event: MouseEvent, item: StorageItem) {
+    if(!selectionEnabled){
+        return
+    }
     if (!event.ctrlKey) {
         itemSelection.clear()
     }
@@ -76,7 +91,7 @@ function openRenameModal(item: StorageItem) {
 }
 
 function openDeleteModal(item: StorageItem) {
-    modal.action = async () => {
+    simpleModal.action = async () => {
         if (itemSelection.isNotEmpty) {
             for (const selectionItem of itemSelection.selectedItems) {
                 await storageItemStore.deleteItem(selectionItem)
@@ -88,12 +103,12 @@ function openDeleteModal(item: StorageItem) {
             storageItemStore.deleteItem(item)
 
         }
-        modal.showModal = false
+        simpleModal.showModal = false
     }
-    modal.showModal = true
-    modal.actionName = "Удалить"
-    modal.title = "Подверждение"
-    modal.text = "Вы действительно хотите удалить этот файл/папку?"
+    simpleModal.showModal = true
+    simpleModal.actionName = "Удалить"
+    simpleModal.title = "Подверждение"
+    simpleModal.text = "Вы действительно хотите удалить этот файл/папку?"
 }
 
 function pageClicked(event: MouseEvent) {
@@ -110,7 +125,8 @@ onMounted(() => {
 })
 </script>
 <template>
-    <DragNDropArea class="my-storage-files-container" @files-dropped="filesDropped" :file-dragging-enabled="fileDraggingEnabled">
+    <DragNDropArea class="my-storage-files-container" @files-dropped="filesDropped"
+        :file-dragging-enabled="fileDraggingEnabled">
         <CuraModal modal-title="Создать папку" :show-modal="showModal" @clicked-outside="clickedOutsideModal">
             <form class="create-folder-modal-content" @submit.prevent>
                 <CuraInput placeholder="Название папки" class="create-folder-modal-content__input" v-model="folderName">
@@ -126,16 +142,19 @@ onMounted(() => {
                 <button class="cura-btn rename-modal-content__btn" @click="renameFile">Переименовать</button>
             </form>
         </CuraModal>
-        <CuraModal :modal-title="modal.title" :show-modal="modal.showModal" @clicked-outside="modal.showModal = false">
+        <CuraModal :modal-title="simpleModal.title" :show-modal="simpleModal.showModal"
+            @clicked-outside="simpleModal.showModal = false">
             <form class="rename-modal-content" @submit.prevent>
-                <p>{{ modal.text }}</p>
+                <p>{{ simpleModal.text }}</p>
                 <div class="delete-modal-content__btns">
-                    <button class="cura-btn rename-modal-content__btn" @click="modal.action()">{{
-                        modal.actionName }}</button>
-                    <button class="cura-btn rename-modal-content__btn" @click="modal.showModal = false">Отмена</button>
+                    <button class="cura-btn rename-modal-content__btn" @click="simpleModal.action()">{{
+                        simpleModal.actionName }}</button>
+                    <button class="cura-btn rename-modal-content__btn"
+                        @click="simpleModal.showModal = false">Отмена</button>
                 </div>
             </form>
         </CuraModal>
+        <CuraMoveItemModal :show-modal="showMoveModal" @clicked-outside="showMoveModal = false"></CuraMoveItemModal>
         <CuraContextMenu class="cura-context-menu" @click="pageClicked">
             <div class="cura-context-menu-item cura-context-menu-item--hoverable" @click="showModal = true">
                 <Icon name="material-symbols:create-new-folder" />
@@ -146,7 +165,7 @@ onMounted(() => {
             @click="itemClicked($event, item)" :open-rename-modal="openRenameModal" :open-delete-modal="openDeleteModal"
             :is-selected="itemSelection.hasItem(item)">
             <template #context-menu>
-                <CuraContextMenu class="cura-context-menu">
+                <CuraContextMenu class="cura-context-menu" v-if="contextMenuEnabled">
                     <div class="cura-context-menu-item" @click.stop="openRenameModal(item)" :class="{
                         'cura-context-menu-item--disabled': itemSelection.length > 1,
                         'cura-context-menu-item--hoverable': itemSelection.length <= 1
@@ -158,6 +177,11 @@ onMounted(() => {
                         @click.stop="openDeleteModal(item)">
                         <Icon name="material-symbols:delete" />
                         <span>Удалить</span>
+                    </div>
+                    <div class="cura-context-menu-item cura-context-menu-item--hoverable"
+                        @click.stop="showMoveModal = true && moveEnabled" v-if="moveEnabled">
+                        <Icon name="material-symbols:drive-file-move" />
+                        <span>Переместить</span>
                     </div>
                 </CuraContextMenu>
             </template>
