@@ -2,8 +2,6 @@
 const { item, isSelected = false } = defineProps<{
     item: StorageItem;
     isSelected?: boolean;
-    openRenameModal: (item: StorageItem) => void
-    openDeleteModal: (item: StorageItem) => void
 }>();
 
 

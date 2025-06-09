@@ -10,9 +10,6 @@ function isItemLast(item: PathItem) {
     return item === storageItemStore.lastPathItem
 }
 
-function isItemFirst(item: PathItem) {
-    return item === storageItemStore.firstPathItem
-}
 
 function itemClicked(item: PathItem) {
     storageItemStore.openFolder(item.parent_id, item.id, item.name)

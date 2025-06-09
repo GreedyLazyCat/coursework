@@ -8,7 +8,7 @@ const { showModal } = toRefs(props)
 
 const emit = defineEmits<{
     clickedOutside: [],
-    moveConfirmed: [item: PathItem]
+    moveConfirmed: [pathItem: PathItem, storageItem: StorageItem]
 }>()
 
 const { loggedIn, user } = useUserSession()
@@ -22,8 +22,7 @@ function clicked() {
 
 function moveItems() {
     if (storageItemStore.lastPathItem) {
-
-        emit('moveConfirmed', storageItemStore.lastPathItem)
+        // emit('moveConfirmed', storageItemStore.lastPathItem, )
     }
 }
 
@@ -46,8 +45,8 @@ onMounted(() => {
     <CuraModal :show-modal="showModal" @clicked-outside="clicked">
         <div class="cura-move-item-modal-container">
             <CuraStoragePath :item-store-name="itemStoreName"></CuraStoragePath>
-            <CuraFileView :item-store-name="itemStoreName" :selection-store-name="selectionStoreName"
-                :selection-enabled="false" :context-menu-enabled="false" :file-dragging-enabled="false"></CuraFileView>
+            <CuraFileViewCore :item-store-name="itemStoreName" :selection-store-name="selectionStoreName"
+                :selection-enabled="false" :context-menu-enabled="false" :file-dragging-enabled="false"></CuraFileViewCore>
             <p class="cura-move-item-modal-container__info">
                 Файл будет перемещен в {{ `"${storageItemStore.lastPathItem?.name}"` }}
             </p>

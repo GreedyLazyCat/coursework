@@ -2,8 +2,12 @@
 import '~/assets/css/storage.css'
 const { loggedIn, user } = useUserSession()
 const itemStoreName = ref("mystorage-item-store")
+const itemSelectionStoreName = ref("mystorage-item-selection")
+const fileViewStoreName = ref("mystorage-file-view")
+
 const storageItemStore = useStorageItemStore(itemStoreName.value)
-const itemSelection = useItemSelectionStore("mystorage-item-selection")
+const itemSelection = useItemSelectionStore(itemSelectionStoreName.value)
+const fileViewStore = useFileViewStore(fileViewStoreName.value)
 
 const showModal = ref(false)
 
@@ -11,6 +15,11 @@ function searchItemClicked(item: string) {
     console.log(item)
     showModal.value = true
 }
+
+function moveConfirmed(item: PathItem){
+
+}
+
 onMounted(() => {
     if (loggedIn.value && user.value && storageItemStore.currentPath.length === 0) {
         storageItemStore.rootId = user.value.rootItemId
@@ -22,6 +31,8 @@ onMounted(() => {
 
 <template>
     <div class="page-main-container">
+        <!-- <CuraMoveItemModal :show-modal="fileViewStore.showMoveModal" @move-confirmed="moveConfirmed"
+            @clicked-outside="fileViewStore.closeMoveModal()"></CuraMoveItemModal>  -->
         <CuraFileInfo name="test" path="test" v-if="false" />
         <div class="cura-selection-toolbar" v-if="itemSelection.isNotEmpty">
             <div class="cura-selection-toolbar-left-items">
@@ -29,31 +40,13 @@ onMounted(() => {
                     <Icon name="material-symbols:close" class="icon" />
                 </div>
                 <span>Выбрано элементов: {{ itemSelection.length }}</span>
-                <!-- <div class="cura-icon-button">
-                    <Icon name="material-symbols:more-vert" class="icon" />
-                </div> -->
             </div>
             <div class="cura-selection-toolbar-right-items">
             </div>
         </div>
         <CuraFileSearch class="my-storage-search" @searchItemClicked="searchItemClicked" />
-        <CuraStoragePath :item-store-name="itemStoreName"></CuraStoragePath>
-        <div class="my-storage-grid-header">
-            <div class="my-storage-grid-header-item">
-                <span>Имя</span>
-            </div>
-
-            <div class="my-storage-grid-header-item">
-                <span>Последнее изменение</span>
-            </div>
-            <div class="my-storage-grid-header-item">
-                <span>Размер</span>
-            </div>
-            <div class="my-storage-grid-header-item my-storage-grid-header-item-actions">
-                <Icon name="material-symbols:more-vert" class="icon" />
-            </div>
-        </div>
-        <CuraFileView :item-store-name="itemStoreName" selection-store-name="mystorage-item-selection"></CuraFileView>
+        
+        <CuraFileManager></CuraFileManager> 
     </div>
 </template>
 <style>
