@@ -108,6 +108,7 @@ onMounted(() => {
 </script>
 <template>
     <div class="cura-file-manager">
+        
         <CuraStoragePath :item-store-name="itemStoreName"></CuraStoragePath>
         <div class="my-storage-grid-header">
             <div class="my-storage-grid-header-item">
@@ -178,5 +179,38 @@ onMounted(() => {
 .cura-file-manager__file-view {
     height: 100%;
     position: relative;
+}
+
+.cura-selection-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    box-sizing: border-box;
+    background-color: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    width: 100%;
+}
+
+.cura-selection-toolbar-left-items {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cura-selection-toolbar-left-items .icon {
+    font-size: 20px;
+}
+
+.cura-selection-toolbar-right-items {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 </style>
