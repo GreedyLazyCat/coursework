@@ -10,8 +10,6 @@ interface LooseObject {
     [key: string]: any
 }
 
-
-
 export default defineEventHandler(async (event) => {
     const session = await requireUserSession(event)
     const storageItemId = getRouterParam(event, "id") ?? ""
