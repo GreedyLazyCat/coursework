@@ -42,6 +42,7 @@ async function moveConfirmed(pathItem: PathItem) {
         await storageItemStore.updateFile(storageItem)
         storageItemStore.deleteItemClientSide(storageItem)
     }
+    itemSelection.clear()
     fileViewStore.closeMoveModal()
 }
 
@@ -78,7 +79,7 @@ function openDeleteModal(item: StorageItem) {
             itemSelection.clear()
         }
         else {
-            itemSelection.remove(item)
+            itemSelection.removeById(item.id)
             storageItemStore.deleteItem(item)
         }
         fileViewStore.simpleModal.showModal = false

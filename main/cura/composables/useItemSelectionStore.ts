@@ -18,6 +18,9 @@ export const useItemSelectionStore = (id: string) => {
                 return (item: StorageItem) => {
                     return this.selectedItems.findIndex((e) => e.id === item.id) !== -1
                 }
+            },
+            first(): StorageItem {
+                return this.selectedItems[0]
             }
         },
         actions: {
@@ -29,8 +32,11 @@ export const useItemSelectionStore = (id: string) => {
             clear() {
                 this.selectedItems = []
             },
-            remove(item: StorageItem) {
-
+            removeById(id: string) {
+                const itemIndex = this.selectedItems.findIndex((e) => e.id === id)
+                if (itemIndex !== -1) {
+                    this.selectedItems.splice(itemIndex, 1)
+                }
             }
         }
     })
