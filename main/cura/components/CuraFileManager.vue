@@ -5,15 +5,39 @@ const { loggedIn, user } = useUserSession()
 const itemStoreName = "file-manager-item-store"
 const itemSelectionStoreName = "file-manager-item-selection"
 const fileViewStoreName = "file-manager-file-view-store"
+const uploadStoreName = "file-manager-upload-store"
 
 const storageItemStore = useStorageItemStore(itemStoreName)
 const itemSelection = useItemSelectionStore(itemSelectionStoreName)
 const fileViewStore = useFileViewStore(fileViewStoreName)
+const uploadStore = useUploadStore(uploadStoreName)
 
 const storageItemNameModel = ref('')
 
 async function filesDropped(files: FileList) {
-    console.log(files)
+    for (const file of files) {
+        const fileNameParts = file.name.split(".")
+        const fileName = fileNameParts.reduce((prev, current, index) => {
+            if (index === fileNameParts.length - 1) {
+                return prev
+            }
+            if (prev === "") {
+                return current
+            }
+            return `${prev}.${current}`
+        }, "")
+        const mimeType = fileNameParts[fileNameParts.length - 1]
+        console.log(fileName, mimeType)
+        if (storageItemStore.lastPathItem) {
+            await uploadStore.addToQueue({
+                parentId: storageItemStore.lastPathItem.id,
+                name: fileName,
+                uploadType: "START",
+                mimeType: mimeType
+            }, file)
+            console.log(uploadStore.uploadQueue)
+        }
+    }
 }
 
 const folderName = ref('')
@@ -109,7 +133,7 @@ onMounted(() => {
 </script>
 <template>
     <div class="cura-file-manager">
-        
+
         <CuraStoragePath :item-store-name="itemStoreName"></CuraStoragePath>
         <div class="my-storage-grid-header">
             <div class="my-storage-grid-header-item">
@@ -162,7 +186,8 @@ onMounted(() => {
                 @clicked-outside="fileViewStore.closeMoveModal()" @move-confirmed="moveConfirmed"></CuraMoveItemModal>
             <CuraFileViewCore :item-store-name="itemStoreName" :selection-store-name="itemSelectionStoreName"
                 :file-view-store-name="fileViewStoreName" @delete="openDeleteModal" @rename="openRenameModal"
-                @item-clicked="itemClicked" @item-double-clicked="itemDoubleClicked" @move="openMoveModal">
+                @item-clicked="itemClicked" @item-double-clicked="itemDoubleClicked" @move="openMoveModal"
+                @files-dropped="filesDropped">
             </CuraFileViewCore>
         </div>
     </div>

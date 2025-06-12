@@ -1,4 +1,5 @@
 interface UploadItem {
+    storageItemId: string;
     file: File;
     chunkNumber: number;
     totalChunks: number;
@@ -12,29 +13,44 @@ interface StartUploadItem {
     uploadType: "REPLACE" | "CONTINUE" | "START";
 }
 
-const useUploadStore = defineStore("upload-store", {
-    state: () => ({
-        //Сделать настраиваемым
-        chunkSize: 5120,
-        uploadQueue: [] as UploadItem[]
-    }),
-    actions: {
-        async addToQueue(item: StartUploadItem, file: File) {
-            await $fetch("/api/upload/start", {
-                method: "POST",
-                body: {
-                    parentId: item.parentId,
-                    name: item.name,
-                    mimeType: item.mimeType,
-                    uploadType: item.uploadType
-                }
-            })
-            this.uploadQueue.push({
-                file: file,
-                chunkNumber: 1,
-                totalChunks: Math.floor(file.size / this.chunkSize),
-                uploadStatus: "INITIALIZED"
-            })
+export const useUploadStore = (name: string) => {
+    const store = defineStore(name, {
+        state: () => ({
+            //Сделать настраиваемым
+            chunkSize: 5120,
+            uploadQueue: [] as UploadItem[]
+        }),
+        getters: {
+
         }
-    }
-})
+        ,
+        actions: {
+            async addToQueue(item: StartUploadItem, file: File) {
+                const data = await $fetch("/api/upload/start", {
+                    method: "POST",
+                    body: {
+                        parentId: item.parentId,
+                        name: item.name,
+                        mimeType: item.mimeType,
+                        uploadType: item.uploadType
+                    }
+                })
+                if (data) {
+                    this.uploadQueue.push({
+                        file: file,
+                        chunkNumber: 1,
+                        totalChunks: Math.floor(file.size / this.chunkSize),
+                        uploadStatus: "INITIALIZED",
+                        storageItemId: data.id
+                    })
+                }
+            },
+            async uploadFiles() {
+                for (const uploadItem of this.uploadQueue) {
+
+                }
+            }
+        }
+    })
+    return store()
+}

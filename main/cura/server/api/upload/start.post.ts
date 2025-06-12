@@ -93,6 +93,7 @@ export default defineEventHandler(async (event) => {
                 .where(eq(tables.uploadChunk.storageItemId, storageItemContinue.id)))
 
             return {
+                id: storageItemContinue.id,
                 lastChunkNumber: (maxNumber.length === 0) ? 0 : maxNumber[0].value
             }
         case "REPLACE":
