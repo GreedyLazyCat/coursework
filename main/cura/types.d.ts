@@ -9,7 +9,7 @@ declare global {
         name: string,
         mimeType: string,
         size: number,
-        createdAt: number,
+        createdAt: string,
         updatedAt: string | null,
         type: "FOLDER" | "FILE",
         storagePath: string | null,

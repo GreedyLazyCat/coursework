@@ -214,7 +214,28 @@ export async function findItemBySubstring(whereToLookId: string, substr: string)
         WHERE name ILIKE ${'%' + substr + '%'};  
         `)
 
-    return result.rows.filter((value)=>{
+    return result.rows.filter((value) => {
         return value.parent_id !== null
     })
+}
+
+export async function getRecentlyEdidetItems(rootId: string) {
+    const result = await db.execute(sql`
+  WITH RECURSIVE recent_descendants AS (
+    SELECT *
+    FROM storage_item
+    WHERE id = ${rootId}
+
+    UNION ALL
+
+    SELECT s.*
+    FROM storage_item s
+    JOIN recent_descendants r ON s.parent_id = r.id
+  )
+  SELECT *
+  FROM recent_descendants
+  WHERE updated_at >= NOW() - INTERVAL '7 days'
+  ORDER BY updated_at DESC;
+`);
+    return result.rows
 }

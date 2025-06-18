@@ -7,6 +7,20 @@ async function fetchFolderItems(folderItemId: string) {
     })
 }
 
+interface RawStorageItem {
+    id: string,
+    parent_id: string,
+    name: string,
+    mime_type: string,
+    size: number,
+    created_at: string,
+    updated_at: string,
+    type: "FOLDER" | "FILE",
+    storage_path: string,
+    hash: string,
+    upload_status: string
+}
+
 export const useStorageItemStore = (name: string) => {
     const store = defineStore(name, {
         state: () => ({
@@ -29,7 +43,7 @@ export const useStorageItemStore = (name: string) => {
             },
             findById() {
                 return (id: string) => {
-                    return this.storageItems.find((e) => e.id === id) 
+                    return this.storageItems.find((e) => e.id === id)
                 }
             }
         },
@@ -106,6 +120,28 @@ export const useStorageItemStore = (name: string) => {
             deleteItemClientSide(item: StorageItem) {
                 const foundItemIndex = this.storageItems.findIndex((e) => e.id === item.id)
                 this.storageItems.splice(foundItemIndex, 1)
+            },
+            async loadLastModifiedItems() {
+                const response = await $fetch<RawStorageItem[]>("/api/storage-item/last-updated")
+                const items = [] as StorageItem[]
+
+                for (const item of response) {
+                    items.push({
+                        id: item.id,
+                        name: item.name,
+                        parentId: item.parent_id,
+                        createdAt: item.created_at,
+                        updatedAt: item.updated_at,
+                        mimeType: item.mime_type,
+                        size: item.size,
+                        type: item.type,
+                        storagePath: item.storage_path,
+                        hash: item.hash,
+                        uploadStatus: item.upload_status
+                    })
+                }
+
+                this.storageItems = items
             }
         }
     })

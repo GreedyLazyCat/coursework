@@ -1,9 +1,21 @@
 <script setup lang="ts">
 import '~/assets/css/storage.css'
 
-const itemSelection = useItemSelectionStore("home")
+const itemStoreName = "home-item-store"
+const fileManagerItemStoreName = "file-manager-item-store"
+const itemSelectionStoreName = "home-item-selection"
+const fileViewStoreName = "home-file-view-store"
 
-onMounted(()=>{
+const itemSelection = useItemSelectionStore(itemSelectionStoreName)
+const itemStore = useStorageItemStore(itemStoreName)
+const fileManagerItemStore = useStorageItemStore(fileManagerItemStoreName)
+
+async function itemDoubleClicked(event: MouseEvent, item: StorageItem) {
+    await fileManagerItemStore.openFolder(null, item.parentId, "")
+    await navigateTo("/mystorage")
+}
+onMounted(async () => {
+    await itemStore.loadLastModifiedItems()
 })
 
 
@@ -29,14 +41,16 @@ onMounted(()=>{
             <div class="my-storage-grid-header-item my-storage-grid-header-item-actions">
                 <Icon name="material-symbols:more-vert" />
             </div>
+
         </div>
-        <DragNDropArea class="my-storage-files-container">
-            
-        </DragNDropArea>
+        <CuraFileViewCore :item-store-name="itemStoreName" :selection-store-name="itemSelectionStoreName"
+            :file-view-store-name="fileViewStoreName" @delete="" @rename="" @item-clicked=""
+            @item-double-clicked="itemDoubleClicked" @move="" @files-dropped="" :move-enabled="false"
+            :file-dragging-enabled="false" :context-menu-enabled="false"></CuraFileViewCore>
     </div>
 </template>
 
-<style> 
+<style>
 .home-main-container {
     display: flex;
     flex-direction: column;
@@ -57,4 +71,6 @@ onMounted(()=>{
     font-weight: 400;
     margin: 0;
 }
+
+
 </style>
