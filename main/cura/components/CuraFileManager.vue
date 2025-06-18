@@ -239,4 +239,7 @@ onMounted(() => {
     align-items: center;
     gap: 10px;
 }
+.rename-modal-content{
+    width: 450px;
+}
 </style>

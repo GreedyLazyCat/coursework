@@ -91,7 +91,7 @@ async function onSubmit() {
     }
     catch (error: any) {
         if (error.data && error.data.statusMessage) {
-           errorMessage.value = error.data.statusMessage 
+            errorMessage.value = error.data.statusMessage
         } else {
             console.error('Неизвестная ошибка:', error)
         }
@@ -180,6 +180,9 @@ watch(email, () => {
                     </template>
                 </CuraInput>
                 <button class="signup-btn">Зарегистрироваться</button>
+                <div class="signup_card__links">
+                    <NuxtLink class="signup-card__link" to="/login">Вход</NuxtLink>
+                </div>
             </form>
         </div>
     </div>
@@ -304,5 +307,21 @@ watch(email, () => {
 
 .signup-form__info--error {
     color: var(--md-sys-color-error);
+}
+
+
+.signup_card__links {
+    display: flex;
+    padding-top: 8px;
+}
+
+.signup-card__link {
+    color: var(--md-sys-color-primary);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.signup-card__link:visited {
+    color: var(--md-sys-color-secondary);
 }
 </style>
