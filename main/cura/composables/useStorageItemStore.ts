@@ -26,6 +26,11 @@ export const useStorageItemStore = (name: string) => {
             },
             firstPathItem(): PathItem | null {
                 return this.currentPath[0]
+            },
+            findById() {
+                return (id: string) => {
+                    return this.storageItems.find((e) => e.id === id) 
+                }
             }
         },
         actions: {

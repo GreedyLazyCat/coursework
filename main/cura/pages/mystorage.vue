@@ -3,17 +3,18 @@ import '~/assets/css/storage.css'
 const { loggedIn, user } = useUserSession()
 
 const itemSelectionStoreName = "file-manager-item-selection"
+const itemStoreName = "file-manager-item-store"
+
 const itemSelection = useItemSelectionStore(itemSelectionStoreName)
+const storageItemStore = useStorageItemStore(itemStoreName)
 
-const showModal = ref(false)
-
-function searchItemClicked(item: string) {
-    console.log(item)
-    showModal.value = true
+async function searchItemClicked(item: PathItem) {
+    await storageItemStore.openFolder(null, item.parent_id as string, "")
+    const storageItem = storageItemStore.findById(item.id)
+    if (storageItem) {
+        itemSelection.add(storageItem)
+    }
 }
-
-
-
 </script>
 
 <template>

@@ -1,15 +1,73 @@
 <script setup lang="ts">
+
+interface PathItemExtended extends PathItem {
+    full_path: string;
+}
+
 const { class: className } = defineProps<{
     class?: string
 }>()
 const search = ref('')
 const showResults = ref(false)
+const searchResults = ref([] as PathItemExtended[])
 const showCloseButton = computed(() => search.value !== '')
 
-const emit = defineEmits<{ (e: 'searchItemClicked', item: string): void }>()
+const emit = defineEmits<{ (e: 'searchItemClicked', item: PathItemExtended): void }>()
 
-watchEffect(() => {
+const findByName = async (name: string) => {
+    const response = await $fetch('/api/storage-item/find-by-name', {
+        method: "POST",
+        body: {
+            name
+        }
+    }) as PathItem[]
+    let results = [] as PathItemExtended[]
+    for (const item of response) {
+        const folderPath = await $fetch<PathItem[]>(`/api/storage-item/read-path/${item.id}`)
+        folderPath.reverse()
+        folderPath[0].name = "Мое хранилище"
+        const full_path = folderPath.reduce((acc, curr, index) => {
+            if (index === 0) {
+                return `${curr.name}/`
+            }
+            acc += `${curr.name}/`
+            return acc
+        }, folderPath[0].name)
+        results.push({
+            ...item,
+            full_path
+        })
+    }
+    searchResults.value = results
+}
+
+const debouncedFind = debounceAsync(findByName, 250)
+
+function searchItemClicked(item: PathItemExtended) {
+    emit('searchItemClicked', item)
+    searchResults.value = []
+    showResults.value = false
+    search.value = ''
+}
+
+function debounceAsync<T extends (...args: any[]) => Promise<any>>(
+    fn: T,
+    delay: number
+): (...args: Parameters<T>) => void {
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    return (...args: Parameters<T>) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            fn(...args).catch(console.error);
+        }, delay);
+    };
+}
+
+
+watchEffect(async () => {
     if (search.value !== '') {
+        debouncedFind(search.value)
         showResults.value = true
     } else {
         showResults.value = false
@@ -27,7 +85,7 @@ function handleFocusChange(isFocused: boolean) {
         showResults.value = true
     }
 }
-function clearInput(){
+function clearInput() {
     search.value = ''
     showResults.value = false
 }
@@ -47,13 +105,15 @@ onUnmounted(() => {
                 <Icon name="material-symbols:search" style="font-size: 20px;"></Icon>
             </template>
             <template #trailing>
-                <Icon class="cura-file-search-close-button" @click="clearInput" v-if="showCloseButton" name="material-symbols:close" style="font-size: 20px;"></Icon>
+                <Icon class="cura-file-search-close-button" @click="clearInput" v-if="showCloseButton"
+                    name="material-symbols:close" style="font-size: 20px;"></Icon>
             </template>
         </CuraInput>
         <div class="search-results-container" v-if="showResults">
-            <div class="search-result-item" @click="emit('searchItemClicked', 'test.txt')">
-                <span>test.txt</span>
-                <span class="search-result-item-path">path/to/file</span>
+            <div class="search-result-item" v-for="item in searchResults" :key="item.id"
+                @click="searchItemClicked(item)">
+                <span>{{ item.name }}</span>
+                <span class="search-result-item-path">{{ item.full_path }}</span>
             </div>
         </div>
     </div>
@@ -74,6 +134,7 @@ onUnmounted(() => {
     margin-top: 8px;
     box-sizing: border-box;
     padding: 8px;
+    gap: 8px;
 }
 
 .search-result-item {
@@ -107,7 +168,8 @@ onUnmounted(() => {
     color: var(--md-sys-color-on-surface-variant);
     opacity: 0.5;
 }
-.cura-file-search-close-button{
+
+.cura-file-search-close-button {
     cursor: pointer;
 }
 </style>

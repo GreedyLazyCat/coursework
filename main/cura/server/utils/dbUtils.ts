@@ -1,4 +1,4 @@
-import { isNull } from "drizzle-orm";
+import { isNull, like } from "drizzle-orm";
 import { NodePgClient } from "drizzle-orm/node-postgres";
 import { NodePgDatabase } from "drizzle-orm/node-postgres/driver";
 import { role } from "../db/schema";
@@ -195,4 +195,26 @@ export async function getStorageItemChildren(storageItemId: string) {
             eq(tables.storageItem.uploadStatus, "FINISHED"),
         ))
     return result
+}
+
+export async function findItemBySubstring(whereToLookId: string, substr: string) {
+    const result = await db.execute(sql`
+        WITH RECURSIVE descendants AS (
+            SELECT id, parent_id, name
+            FROM storage_item 
+            WHERE id = ${whereToLookId} 
+
+            UNION ALL
+
+            SELECT n.id, n.parent_id, n.name
+            FROM storage_item n
+            JOIN descendants d ON n.parent_id = d.id
+        )
+        SELECT * FROM descendants
+        WHERE name ILIKE ${'%' + substr + '%'};  
+        `)
+
+    return result.rows.filter((value)=>{
+        return value.parent_id !== null
+    })
 }
